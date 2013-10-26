@@ -120,6 +120,7 @@ var MIN_POS_Y=7;
 var posX=0,posY=MIN_POS_Y, posZ=0;
 var PlayerYAccel=0;
 
+var xRotation=0.0;
 var yRotation=0.0;
 var playerObj=OWL_OBJ;
 var playerTexture=SWOOP_TEXTURE;
@@ -415,11 +416,11 @@ function moveCallback(e) {
       e.webkitMovementY   ||
       0;
 
-   camRotY+=movementX*CAMERA_Y_ROTATION_SPEED; //movement on x = rotation around y axis
-   camRotX+=movementY*CAMERA_X_ROTATION_SPEED; //movement on y = rotation around x axis
+   yRotation+=movementX*CAMERA_Y_ROTATION_SPEED; //movement on x = rotation around y axis
+   yRotation+=movementY*CAMERA_X_ROTATION_SPEED; //movement on y = rotation around x axis
 //keep it in bounds
-   if (camRotX>CAMERA_X_BOUND) camRotX = CAMERA_X_BOUND;
-   if (camRotX<-CAMERA_X_BOUND) camRotX = -CAMERA_X_BOUND;
+   if (yRotation>CAMERA_X_BOUND) yRotation = CAMERA_X_BOUND;
+   if (yRotation<-CAMERA_X_BOUND) yRotation = -CAMERA_X_BOUND;
 }
 
 /* Code From:
@@ -641,7 +642,7 @@ function drawScene() {
     mvTranslate([-camX, -camY, -camZ])
 
     var vectorLight = [];
-    vectorLight[0]=$V([posX, LIGHT_HEIGHT, posZ,1]);
+    vectorLight[0]=$V([0, LIGHT_HEIGHT, 0,1]);
     vectorLight[0] = mvMatrix.x(vectorLight[0]);
 
 //    vectorLight[1] = $V([powerPosX[0], LIGHT_HEIGHT+mapY, powerPosZ[0],1]);
@@ -655,6 +656,7 @@ function drawScene() {
 //    gl.uniform3f(lightPositionUniform[2], vectorLight[2].e(1), vectorLight[2].e(2), vectorLight[2].e(3));
 
     mvTranslate([posX,posY,posZ]);
+    myRotate(xRotation, [1, 0, 0]);
     mvRotate(yRotation, [0, 1, 0]);
 
 
