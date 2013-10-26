@@ -480,7 +480,6 @@ function initShaders() {
   lightMaterialUniform[0] = gl.getUniformLocation(glProgram, "lightMaterial");
   lightDistanceUniform[0] = gl.getUniformLocation(glProgram, "lightDistance");
   gl.uniform1f(lightDistanceUniform[0], LIGHT_DIST[0]);
-  gl.uniform1f(lightDistanceUniform[1], LIGHT_DIST[1]);
   gl.uniform3f(lightMaterialUniform[0], lightMaterial[0], lightMaterial[1], lightMaterial[2]); //player Light
   
   samplerUniform = gl.getUniformLocation(glProgram, "sampler");
@@ -608,9 +607,6 @@ function drawScene() {
 //player
     camY=7.7;
 
-     gl.uniform1f(lightingDisabledUniform, 0);
-     gl.uniform2f(texCoordAddUniform,0,0);
-
      loadIdentity();
   
     mvRotate(camRotX, [1,0,0])  
@@ -618,7 +614,7 @@ function drawScene() {
     mvTranslate([-camX, -camY, -camZ])
 
     var vectorLight = [];
-    vectorLight[0]=$V([posX, LIGHT_HEIGHT+mapY, posZ,1]);
+    vectorLight[0]=$V([posX, LIGHT_HEIGHT, posZ,1]);
     vectorLight[0] = mvMatrix.x(vectorLight[0]);
 
 //    vectorLight[1] = $V([powerPosX[0], LIGHT_HEIGHT+mapY, powerPosZ[0],1]);
