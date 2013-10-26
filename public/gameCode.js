@@ -658,8 +658,8 @@ function drawScene() {
 //    gl.uniform3f(lightPositionUniform[2], vectorLight[2].e(1), vectorLight[2].e(2), vectorLight[2].e(3));
 
     mvTranslate([posX,posY,posZ]);
-    mvRotate(yRotation, [0, 1, 0]);
-    mvRotate(xRotation, [1, 0, 0]);
+    mvRotate(-yRotation, [0, 1, 0]);
+    mvRotate(-xRotation, [1, 0, 0]);
 
 
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[playerObj]);
@@ -749,6 +749,7 @@ function act(dt)
     if (spacePressed && posY<=MIN_POS_Y+1)
     {
        PlayerYAccel=10;
+       posY+=PlayerYAccel;
     }
 
     if (posY>MIN_POS_Y)
