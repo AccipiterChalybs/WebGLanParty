@@ -11,6 +11,7 @@ var leftPressed = false;
 var rightPressed = false;
 var upPressed = false;
 var downPressed = false;
+var spacePressed = false;
 
 var gl; //webGL object
 var canvas; //HTML5 canvas object that uses webGL
@@ -299,6 +300,10 @@ function keyDown(event)
         {
             downPressed=true;
         }
+        if (keyCode==32)
+        {
+            spacePressed="true";
+        }
         if (keyCode == 89) //y key pressed - switch to chat mode
         {
             chatMessage = ""; //clear chat just in case
@@ -352,6 +357,10 @@ function keyUp(event)
         if (keyCode==40 || keyCode == 83) //down
         {
             downPressed=false;
+        }
+        if (keyCode==32)
+        {
+            spacePressed="false";
         }
     }
 }
@@ -731,7 +740,7 @@ function act(dt)
         dX = Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
         dZ = Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
     }
-    if (spacePressed && posY=0;)
+    if (spacePressed && posY<=1;)
     {
        PlayerYAccel=10;
     }
