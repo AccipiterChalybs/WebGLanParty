@@ -39,7 +39,7 @@
     if (lightingDisabled<2.0)
     { 
     vec3 normal=normalMatrix*vertexNormal;
-    vec4 vertexTangentA = vec4(normalMatrix*,1);
+    vec4 vertexTangentA = vec4(vertexNormal,1);
     vec3 bitangent = cross(normal.xyz, vertexTangentA.xyz)*vertexTangentA.w;
     vec4 position=uMVMatrix * vec4(vertexPosition, 1.0);
 
