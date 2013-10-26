@@ -158,7 +158,15 @@ function start()
     socket.on('fPos', function (data) {
 
         var incId = data[0];
-        if (incId+1 > numPlayers) numPlayers = incId+1;
+        while (incId+1 > numPlayers)
+        {
+           snapshotTimestamp[numPlayers]=[];
+           otherPosX[numPlayers]=[];
+           otherPosY[numPlayers]=[];
+           otherPosZ[numPlayers]=[];
+           otherRotY[numPlayers]=[];
+           numPlayers++;
+        }
         if (incId!=playerId)
         {
             var snapshot=NUM_SNAPSHOTS-1;
