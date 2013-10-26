@@ -18,7 +18,7 @@ var canvas; //HTML5 canvas object that uses webGL
 var vertexBuffer=[]; //buffer to hold vertices
 var normalBuffer=[]; //buffer to hold vertex normals
 var textureBuffer=[]; //buffer to hold texture coordinates
-var tangentBuffer=[];
+//var tangentBuffer=[];
 var indexBuffer=[]; //buffer to hold vertex indices
 
 var glProgram; //program holding the shaders
@@ -26,7 +26,7 @@ var glProgram; //program holding the shaders
 var vertexPositionAttribute; //pointer to vertexPosition in the shader
 var vertexNormalAttribute; //pointer to vertexNormal in the shader
 var vertexTextureAttribute; //pointer to vertexTexture in the shader
-var vertexTangentAttribute;
+//var vertexTangentAttribute;
 
 var pUniform; //perspective matrix
 var nUniform; //normal matrix
@@ -471,8 +471,8 @@ function initShaders() {
   vertexTextureAttribute = gl.getAttribLocation(glProgram, "vertexTexture");
   gl.enableVertexAttribArray(vertexTextureAttribute);
 
-  vertexTangentAttribute = gl.getAttribLocation(glProgram, "vertexTangent");
-  gl.enableVertexAttribArray(vertexTangentAttribute);
+  //vertexTangentAttribute = gl.getAttribLocation(glProgram, "vertexTangent");
+  //gl.enableVertexAttribArray(vertexTangentAttribute);
   
   pUniform = gl.getUniformLocation(glProgram, "uPMatrix"); //perspective matrix
   nUniform = gl.getUniformLocation(glProgram, "normalMatrix"); //normal matrix
@@ -569,9 +569,9 @@ function initBuffers() {
       gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[obj]);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoords[obj]), gl.STATIC_DRAW);
     
-      tangentBuffer[obj] = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[obj]);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(tangents[obj]), gl.STATIC_DRAW);
+     // tangentBuffer[obj] = gl.createBuffer();
+     // gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[obj]);
+     // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(tangents[obj]), gl.STATIC_DRAW);
 
       indexBuffer[obj] = gl.createBuffer();
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[obj]);
@@ -655,17 +655,17 @@ function drawScene() {
     gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[playerObj]);
     gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[playerObj]);
-    gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
+  //  gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[playerObj]);
+  //  gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
   
   
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture[playerTexture]);
     gl.uniform1i(samplerUniform, 0);
 
-    gl.activeTexture(gl.TEXTURE1);
-    gl.bindTexture(gl.TEXTURE_2D, texture[2]);
-    gl.uniform1i(normalMapUniform, 1);
+   // gl.activeTexture(gl.TEXTURE1);
+   // gl.bindTexture(gl.TEXTURE_2D, texture[2]);
+   // gl.uniform1i(normalMapUniform, 1);
   
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[playerObj]);
     setNormalMatrix();
@@ -682,16 +682,16 @@ function drawScene() {
   gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[backgroundObj]);
   gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
 
-  gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[backgroundObj]);
-  gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
+ // gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[backgroundObj]);
+ // gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
      
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, texture[backgroundTexture]);
   gl.uniform1i(samplerUniform, 0);
   
-  gl.activeTexture(gl.TEXTURE1);
-  gl.bindTexture(gl.TEXTURE_2D, texture[3]);
-  gl.uniform1i(normalMapUniform, 1);
+//  gl.activeTexture(gl.TEXTURE1);
+ // gl.bindTexture(gl.TEXTURE_2D, texture[3]);
+//  gl.uniform1i(normalMapUniform, 1);
         
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[backgroundObj]);
   loadIdentity();
@@ -771,12 +771,12 @@ function loadTextures() {
 
   texture[2] = gl.createTexture();
   image[2] = new Image();
-  image[2].onload = function() { handleTextureLoaded(image[0], texture[0]); }
+  image[2].onload = function() { handleTextureLoaded(image[2], texture[2]); }
   image[2].src = "/resources/images/noNormal.png";
   
   texture[3] = gl.createTexture();
   image[3] = new Image();
-  image[3].onload = function() { handleTextureLoaded(image[1], texture[1]); }
+  image[3].onload = function() { handleTextureLoaded(image[3], texture[3]); }
   image[3].src = "/resources/images/bgNormal.png";
 }
  
