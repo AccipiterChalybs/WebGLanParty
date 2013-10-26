@@ -98,7 +98,8 @@ var AUDIO_HIT_BY_ENEMY = 2;
 
 //camera vars
 var worldX=0,worldY=0, worldZ=0;
-var camRotX = 50;
+var camRotX = 0;
+var camRotY = 0;
 var camX=0; camY=0; camZ=0;
 
 //player vars
@@ -136,6 +137,25 @@ function start()
     document.onkeyup = function(event) {
         keyUp(event);
     };
+
+    //from http://www.html5rocks.com/en/tutorials/pointerlock/intro/
+    var pointerLockValid = 'pointerLockElement' in document ||
+    'mozPointerLockElement' in document ||
+    'webkitPointerLockElement' in document;
+    element.requestPointerLock = element.requestPointerLock ||
+                     element.mozRequestPointerLock ||
+                     element.webkitRequestPointerLock;
+    // Ask the browser to lock the pointer
+    element.requestPointerLock();
+
+    // Hook pointer lock state change events
+    document.addEventListener('pointerlockchange', changeCallback, false);
+    document.addEventListener('mozpointerlockchange', changeCallback, false);
+    document.addEventListener('webkitpointerlockchange', changeCallback, false);
+
+    // Hook mouse move events
+    document.addEventListener("mousemove", this.moveCallback, false);
+
 
     canvas = document.getElementById("glCanvas");
 
@@ -336,6 +356,36 @@ function writeTex(textBox, stringS)
     textBox.appendChild(linebreak);
 }
 
+function changeCallback ()
+{
+  if (document.pointerLockElement === requestedElement ||
+      document.mozPointerLockElement === requestedElement ||
+      document.webkitPointerLockElement === requestedElement) {
+      // Pointer was just locked
+      // Enable the mousemove listener
+      document.addEventListener("mousemove", this.moveCallback, false);
+    } else {
+      // Pointer was just unlocked
+      // Disable the mousemove listener
+      document.removeEventListener("mousemove", this.moveCallback, false);
+      this.unlockHook(this.element);
+    }
+}
+
+function moveCallback(e) {
+  var movementX = e.movementX ||
+      e.mozMovementX          ||
+      e.webkitMovementX       ||
+      0;
+  var movementY = e.movementY ||
+      e.mozMovementY      ||
+      e.webkitMovementY   ||
+      0;
+
+   camRotX+=movementX/10f;
+   camRotY+=movementY/10f;
+}
+
 /* Code From:
  * https://developer.mozilla.org/en-US/docs/Web/WebGL/Getting_started_with_WebGL
  */
@@ -519,7 +569,7 @@ function drawScene() {
     var delta = currentTime - lastUpdateTime;
 
   //remove this for now
-  //  act(delta)
+    act(delta)
 
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -539,6 +589,7 @@ function drawScene() {
      loadIdentity();
   
     mvTranslate([-worldX, -worldY, -worldZ])
+    mvRotate(camRotY, [0,1,0])  
     mvRotate(camRotX, [1,0,0])  
     mvTranslate([-camX, -camY, -camZ])
 
@@ -596,6 +647,7 @@ function drawScene() {
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[backgroundObj]);
   loadIdentity();
   mvTranslate([-worldX, -worldY, -worldZ])
+  mvRotate(camRotY, [0,1,0])  
   mvRotate(camRotX, [1,0,0])
   mvTranslate([-camX, -camY, -camZ]);
   mvTranslate([0,mapY,-20]);
@@ -605,6 +657,26 @@ function drawScene() {
   gl.drawElements(gl.TRIANGLES, indices[backgroundObj].length, gl.UNSIGNED_SHORT, 0);
 
    lastUpdateTime = currentTime;
+}
+
+function act(dt)
+{
+    if (upPressed)
+    {
+        camZ -= dt * 0.005;
+    }
+    if (downPressed)
+    {
+        camZ += dt * 0.005;
+    }
+    if (leftPressed)
+    {
+        camX -= dt * 0.005;
+    }
+    if (rightPressed)
+    {
+        camX += dt * 0.005;
+    }
 }
 
 function loadObj() 
