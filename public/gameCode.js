@@ -20,6 +20,7 @@ var vertexBuffer=[]; //buffer to hold vertices
 var normalBuffer=[]; //buffer to hold vertex normals
 var textureBuffer=[]; //buffer to hold texture coordinates
 var indexBuffer=[]; //buffer to hold vertex indices
+var tangentBuffer=[];
 
 var glProgram; //program holding the shaders
 
@@ -537,6 +538,7 @@ function initBuffers() {
   normals = [];
   indices = [];
   texCoords = [];
+  tangents =[];
   loadObj();
   loadTextures();
    
@@ -554,6 +556,10 @@ function initBuffers() {
       gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[obj]);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoords[obj]), gl.STATIC_DRAW);
     
+      tangentBuffer[obj] = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[obj]);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(tangents[obj]), gl.STATIC_DRAW);
+
       indexBuffer[obj] = gl.createBuffer();
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[obj]);
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices[obj]), gl.STATIC_DRAW);
