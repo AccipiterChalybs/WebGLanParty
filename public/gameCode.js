@@ -720,7 +720,7 @@ function drawScene() {
 
 function act(dt)
 {
-    var dX, dZ;
+    var dX=0, dZ=0;
     if (upPressed)
     {
         dX = Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
@@ -758,7 +758,7 @@ function act(dt)
     }
 
     posX+=dX;
-    posY+=dY;
+    posY+=dZ;
 
     socket.emit('pos', dX, dZ);
 }
