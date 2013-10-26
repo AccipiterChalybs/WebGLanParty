@@ -595,7 +595,6 @@ function drawScene() {
 
      loadIdentity();
   
-    mvTranslate([-worldX, -worldY, -worldZ])
     mvRotate(camRotY, [0,1,0])  
     mvRotate(camRotX, [1,0,0])  
     mvTranslate([-camX, -camY, -camZ])
@@ -653,7 +652,6 @@ function drawScene() {
         
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[backgroundObj]);
   loadIdentity();
-  mvTranslate([-worldX, -worldY, -worldZ])
   mvRotate(camRotY, [0,1,0])  
   mvRotate(camRotX, [1,0,0])
   mvTranslate([-camX, -camY, -camZ]);
