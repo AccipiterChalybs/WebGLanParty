@@ -89,14 +89,16 @@ var inputConsole;
 var score=0;
 
 //textures
-var SWOOP_TEXTURE=0;
-var BACKGROUND_TEXTURE=1;
+var RIFLE_TEXTURE=0;
+var PLAYER_TEXTURE=1;
+var BACKGROUND_TEXTURE=2;
 
 //objects
-var MAX_OBJ=2;
+var MAX_OBJ=3;
 
-OWL_OBJ=0;
-BG_OBJ=1;
+RIFLE_OBJ=0;
+PLAYER_OBJ=1;
+BG_OBJ=2;
 
 //audio
 var soundPlayer=[];
@@ -122,15 +124,16 @@ var PlayerYAccel=0;
 
 var xRotation=0.0;
 var yRotation=0.0;
-var playerObj=OWL_OBJ;
-var playerTexture=SWOOP_TEXTURE;
+var playerObj=RIFLE_OBJ;
+var playerTexture=RIFLE_TEXTURE;
 
 //other player vars
-var otherPlayerObj=OWL_OBJ;
+var otherPlayerObj=PLAYER_OBJ;
 var otherPosX=[];
 var otherPosY=[];
 var otherPosZ=[];
-var otherPlayerTexture=SWOOP_TEXTURE;
+var otherRotY=[];
+var otherPlayerTexture=PLAYER_TEXTURE;
 var numPlayers=0;
 
 //background vars
@@ -157,6 +160,7 @@ function start()
             otherPosX[incId] = data[1];
             otherPosY[incId] = data[2];
             otherPosZ[incId] = data[3];
+            otherRotY[incId] = data[4];
         }
         else
         {
@@ -750,6 +754,7 @@ function drawScene() {
           mvRotate(camRotY, [0,1,0])  
           mvTranslate([-camX, -camY, -camZ]);
           mvTranslate([otherPosX[p], otherPosY[p], otherPosZ[p]]);
+          mvRotate(otherRotY[p], [0, 1, 0]);
           setNormalMatrix();
           setModelViewMatrix();
 
@@ -819,14 +824,14 @@ function act(dt)
     }
     if (spacePressed && posY<=MIN_POS_Y+1)
     {
-       PlayerYAccel=10;
+       PlayerYAccel=5;
        posY+=PlayerYAccel;
     }
 
     if (posY>MIN_POS_Y)
     {
        posY+=PlayerYAccel;
-       PlayerYAccel-=0.098;
+       PlayerYAccel-=0.02;
     }
     if (posY<MIN_POS_Y)
     {
@@ -837,18 +842,30 @@ function act(dt)
     posX+=dX;
     posZ+=dZ;
 
-    socket.emit('fPos', [playerId, posX, posY, posZ]);
+    socket.emit('fPos', [playerId, posX, posY, posZ, yRotation]);
 }
 
 function loadObj() 
 {
   var req = new XMLHttpRequest();
-  req.open("GET", "/resources/models/rifle.txt", false);
+  req.open("GET", "/resources/models/rifle2.txt", false);
   req.onreadystatechange = function(){
      if (req.readyState===4) {
         if (req.status === 200){
            text = req.responseText;
-           processObj(OWL_OBJ);
+           processObj(RIFLE_OBJ);
+        }
+     }
+  }
+  req.send(null);
+
+  var req = new XMLHttpRequest();
+  req.open("GET", "/resources/models/player.txt", false);
+  req.onreadystatechange = function(){
+     if (req.readyState===4) {
+        if (req.status === 200){
+           text = req.responseText;
+           processObj(PLAYER_OBJ);
         }
      }
   }
@@ -871,17 +888,17 @@ function loadTextures() {
   texture[0] = gl.createTexture();
   image[0] = new Image();
   image[0].onload = function() { handleTextureLoaded(image[0], texture[0]); }
-  image[0].src = "/resources/images/rifleAO.png";
+  image[0].src = "/resources/images/rifle2AO.png";
   
   texture[1] = gl.createTexture();
   image[1] = new Image();
   image[1].onload = function() { handleTextureLoaded(image[1], texture[1]); }
-  image[1].src = "/resources/images/bgTex1.png";
+  image[1].src = "/resources/images/playerAO.png";
 
   texture[2] = gl.createTexture();
   image[2] = new Image();
   image[2].onload = function() { handleTextureLoaded(image[2], texture[2]); }
-  image[2].src = "/resources/images/noNormal.png";
+  image[2].src = "/resources/images/bgTex1.png";
   
   texture[3] = gl.createTexture();
   image[3] = new Image();
