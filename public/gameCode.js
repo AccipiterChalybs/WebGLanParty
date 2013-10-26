@@ -115,8 +115,8 @@ var camX=0; camY=0; camZ=0;
 //player vars
 var playerName="";
 var customizeCode="";
-var SWOOP_START_Z=-1;
-var posX=0,posY=1.4, posZ=SWOOP_START_Z;
+var posX=0,posY=7, posZ=0;
+var PlayerYAccel;
 
 var yRotation=0.0;
 var playerObj=OWL_OBJ;
@@ -620,7 +620,9 @@ function drawScene() {
 
   gl.uniform1f(lightingDisabledUniform, 0);
 //player
-    camY=7.7;
+    camX = posX;
+    camY = posY;
+    camZ = posZ;
 
      loadIdentity();
   
@@ -711,30 +713,50 @@ function act(dt)
 {
     if (upPressed)
     {
-        camX += Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
-        camZ -= Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dX = Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dZ = -Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (downPressed)
     {
-        camX -= Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
-        camZ += Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dX = -Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dZ = Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (leftPressed)
     {
-        camX -= Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
-        camZ -= Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dX = -Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dZ = -Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (rightPressed)
     {
-        camX += Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
-        camZ += Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dX = Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dZ = Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
     }
+    if (spacePressed && posY=0;)
+    {
+       PlayerYAccel=10;
+    }
+
+    if (posY>0)
+    {
+       posY+=PlayerYAccel;
+       PlayerYAccel--;
+    }
+    if (posY<0)
+    {
+      posY=0;
+      PlayerYAccel=0;
+    }
+
+    posX+=dX;
+    posY+=dY;
+
+    socket.emit('pos', dX, dZ);
 }
 
 function loadObj() 
 {
   var req = new XMLHttpRequest();
-  req.open("GET", "/resources/models/Swoop1.txt", false);
+  req.open("GET", "/resources/models/rifle.txt", false);
   req.onreadystatechange = function(){
      if (req.readyState===4) {
         if (req.status === 200){
@@ -762,7 +784,7 @@ function loadTextures() {
   texture[0] = gl.createTexture();
   image[0] = new Image();
   image[0].onload = function() { handleTextureLoaded(image[0], texture[0]); }
-  image[0].src = "/resources/images/owlTexture1.png";
+  image[0].src = "/resources/images/rifleAO.png";
   
   texture[1] = gl.createTexture();
   image[1] = new Image();
