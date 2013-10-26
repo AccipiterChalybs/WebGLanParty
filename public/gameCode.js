@@ -634,6 +634,8 @@ function drawScene() {
     camX = posX;
     camY = posY;
     camZ = posZ;
+    camRotX = xRotation;
+    camRotY = yRotation;
 
      loadIdentity();
   
@@ -656,8 +658,8 @@ function drawScene() {
 //    gl.uniform3f(lightPositionUniform[2], vectorLight[2].e(1), vectorLight[2].e(2), vectorLight[2].e(3));
 
     mvTranslate([posX,posY,posZ]);
-    myRotate(xRotation, [1, 0, 0]);
     mvRotate(yRotation, [0, 1, 0]);
+    mvRotate(xRotation, [1, 0, 0]);
 
 
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[playerObj]);
@@ -726,23 +728,23 @@ function act(dt)
     var dX=0, dZ=0;
     if (upPressed)
     {
-        dX = Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
-        dZ = -Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dX = Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dZ = -Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (downPressed)
     {
-        dX = -Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
-        dZ = Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dX = -Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dZ = Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (leftPressed)
     {
-        dX = -Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
-        dZ = -Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dX = -Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dZ = -Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (rightPressed)
     {
-        dX = Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
-        dZ = Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        dX = Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dZ = Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (spacePressed && posY<=MIN_POS_Y+1)
     {
