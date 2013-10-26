@@ -15,59 +15,73 @@
           attribute vec3 vertexPosition;
           attribute vec3 vertexNormal;
           attribute vec2 vertexTexture;
-          attribute vec4 vertexTangent;
 
           uniform mat4 uMVMatrix;
           uniform mat4 uPMatrix;
           uniform mat3 normalMatrix;
-  
+          
           uniform mediump vec3 lightPosition;
           uniform mediump vec3 lightPosition2;
           uniform mediump vec3 lightPosition3;
           
-          varying mediump vec3 lightDistanceVector;
-          varying mediump vec3 lightVector;
+          varying mediump vec3 normal;
+          varying mediump vec3 lightDistanceVector1;
+          varying mediump vec3 lightDistanceVector2;
+          varying mediump vec3 lightDistanceVector3;
           varying mediump vec2 texCoord;
           
           void main(void) 
           {
-              vec3 normal=normalMatrix*vertexNormal;
-              vec4 vertexTangentA = vec4(normalMatrix*vertexTangent.xyz,vertexTangent.w);
-              vec3 bitangent = cross(normal.xyz, vertexTangentA.xyz)*vertexTangentA.w;
-              vec4 position=uMVMatrix * vec4(vertexPosition, 1.0);
-
-              lightDistanceVector = lightPosition-position.xyz;
-              lightVector = vec3(dot(lightDistanceVector, vertexTangentA.xyz), dot(lightDistanceVector, bitangent), dot(lightDistanceVector, normal));
-
-              gl_Position = uPMatrix * position;
-              texCoord = vertexTexture;
+            normal=normalMatrix*vertexNormal;
+            mediump vec4 position=uMVMatrix * vec4(vertexPosition, 1.0);
+            lightDistanceVector1 = lightPosition-position.xyz;
+            lightDistanceVector2 = lightPosition2-position.xyz;
+            lightDistanceVector3 = lightPosition3-position.xyz;
+            gl_Position = uPMatrix * position;
+            texCoord = vertexTexture;
           }
         </script>
 
         <script id="shader-fs" type="x-shader/x-fragment">
           uniform sampler2D sampler;
-          uniform sampler2D normalMap;
           uniform mediump float lightDistance;
           uniform mediump float lightDistance2;
           uniform mediump vec3 lightMaterial;
           uniform mediump vec3 lightMaterial2;
           uniform mediump vec3 lightMaterial3;
+          uniform mediump vec2 texCoordAdd;
+          uniform mediump float lightingDisabled;
 
-          varying mediump vec3 lightDistanceVector;
-          varying mediump vec3 lightVector;
+          varying mediump vec3 normal;
+          varying mediump vec3 lightDistanceVector1;
+          varying mediump vec3 lightDistanceVector2;
+          varying mediump vec3 lightDistanceVector3;
           varying mediump vec2 texCoord;
           
           void main(void) {
-                mediump vec3 nNormal = vec3(-(2.0*texture2D(normalMap, texCoord).x - 1.0), (2.0*texture2D(normalMap, texCoord).yz - 1.0));
-      
-                mediump float distance1 = length(lightDistanceVector);
-
-                mediump vec3 lightDirection = normalize(lightVector);
+                mediump vec3 nNormal = normalize(normal);
+                
+                mediump float distance = length(lightDistanceVector1);
+                mediump vec3 lightDirection = lightDistanceVector1/distance;
                    
                 mediump float dLevel = max(0.0, dot(nNormal, lightDirection));
-                mediump float attenuation = min(lightDistance/(distance1*distance1),1.0);
+                mediump float attenuation = lightDistance/(distance*distance);
                 mediump vec3 lightColor =  dLevel*attenuation*lightMaterial;
-                 
+                
+                distance = length(lightDistanceVector2);
+                lightDirection = lightDistanceVector2/distance;
+                   
+                dLevel = max(0.0, dot(nNormal, lightDirection));
+                attenuation = lightDistance2/(distance*distance);
+                lightColor =  lightColor+ dLevel*attenuation*lightMaterial2;
+                
+                distance = length(lightDistanceVector3);
+                lightDirection = lightDistanceVector3/distance;
+                   
+                dLevel = max(0.0, dot(nNormal, lightDirection));
+                attenuation = lightDistance2/(distance*distance);
+                lightColor =  lightColor+ dLevel*attenuation*lightMaterial3;
+               
                 gl_FragColor = vec4(lightColor*texture2D(sampler, texCoord).xyz,1);
           }
         </script>

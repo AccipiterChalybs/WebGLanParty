@@ -304,7 +304,7 @@ function keyDown(event)
         }
         if (keyCode==32)
         {
-            spacePressed="true";
+            spacePressed=true;
         }
         if (keyCode == 89) //y key pressed - switch to chat mode
         {
@@ -362,7 +362,7 @@ function keyUp(event)
         }
         if (keyCode==32)
         {
-            spacePressed="false";
+            spacePressed=false;
         }
     }
 }
@@ -482,8 +482,8 @@ function initShaders() {
   vertexTextureAttribute = gl.getAttribLocation(glProgram, "vertexTexture");
   gl.enableVertexAttribArray(vertexTextureAttribute);
 
-  vertexTangentAttribute = gl.getAttribLocation(glProgram, "vertexTangent");
- gl.enableVertexAttribArray(vertexTangentAttribute);
+  //vertexTangentAttribute = gl.getAttribLocation(glProgram, "vertexTangent");
+ //gl.enableVertexAttribArray(vertexTangentAttribute);
   
   pUniform = gl.getUniformLocation(glProgram, "uPMatrix"); //perspective matrix
   nUniform = gl.getUniformLocation(glProgram, "normalMatrix"); //normal matrix
@@ -671,17 +671,17 @@ function drawScene() {
     gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[playerObj]);
     gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[playerObj]);
-    gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
+  //  gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[playerObj]);
+  //  gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
   
   
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture[playerTexture]);
     gl.uniform1i(samplerUniform, 0);
 
-    gl.activeTexture(gl.TEXTURE1);
-    gl.bindTexture(gl.TEXTURE_2D, texture[2]);
-    gl.uniform1i(normalMapUniform, 1);
+  //  gl.activeTexture(gl.TEXTURE1);
+  //  gl.bindTexture(gl.TEXTURE_2D, texture[2]);
+  //  gl.uniform1i(normalMapUniform, 1);
   
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[playerObj]);
     setNormalMatrix();
@@ -698,16 +698,16 @@ function drawScene() {
   gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[backgroundObj]);
   gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
 
-  gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[backgroundObj]);
-  gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
+//  gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[backgroundObj]);
+ // gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
      
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, texture[backgroundTexture]);
   gl.uniform1i(samplerUniform, 0);
   
-  gl.activeTexture(gl.TEXTURE1);
-  gl.bindTexture(gl.TEXTURE_2D, texture[3]);
-  gl.uniform1i(normalMapUniform, 1);
+ // gl.activeTexture(gl.TEXTURE1);
+ // gl.bindTexture(gl.TEXTURE_2D, texture[3]);
+  //gl.uniform1i(normalMapUniform, 1);
         
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[backgroundObj]);
   loadIdentity();
@@ -755,7 +755,7 @@ function act(dt)
     if (posY>MIN_POS_Y)
     {
        posY+=PlayerYAccel;
-       PlayerYAccel--;
+       PlayerYAccel-=0.098;
     }
     if (posY<MIN_POS_Y)
     {
