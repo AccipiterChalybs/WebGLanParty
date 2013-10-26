@@ -115,6 +115,8 @@ var playerTexture=SWOOP_TEXTURE;
 var backgroundObj=BG_OBJ;
 var backgroundTexture=BACKGROUND_TEXTURE;
 
+var mapY=0;
+
 var fps=0;
 var lastFPSCheck;
 
@@ -544,15 +546,15 @@ function drawScene() {
     vectorLight[0]=$V([posX, LIGHT_HEIGHT+mapY, posZ,1]);
     vectorLight[0] = mvMatrix.x(vectorLight[0]);
 
-    vectorLight[1] = $V([powerPosX[0], LIGHT_HEIGHT+mapY, powerPosZ[0],1]);
-    vectorLight[1] = mvMatrix.x(vectorLight[1]);
+//    vectorLight[1] = $V([powerPosX[0], LIGHT_HEIGHT+mapY, powerPosZ[0],1]);
+//    vectorLight[1] = mvMatrix.x(vectorLight[1]);
 
-    vectorLight[2] = $V([powerPosX[1], LIGHT_HEIGHT+mapY, powerPosZ[1],1]);
-    vectorLight[2] = mvMatrix.x(vectorLight[2]);
+//    vectorLight[2] = $V([powerPosX[1], LIGHT_HEIGHT+mapY, powerPosZ[1],1]);
+//    vectorLight[2] = mvMatrix.x(vectorLight[2]);
 
     gl.uniform3f(lightPositionUniform[0], vectorLight[0].e(1), vectorLight[0].e(2), vectorLight[0].e(3));
-    gl.uniform3f(lightPositionUniform[1], vectorLight[1].e(1), vectorLight[1].e(2), vectorLight[1].e(3));
-    gl.uniform3f(lightPositionUniform[2], vectorLight[2].e(1), vectorLight[2].e(2), vectorLight[2].e(3));
+//    gl.uniform3f(lightPositionUniform[1], vectorLight[1].e(1), vectorLight[1].e(2), vectorLight[1].e(3));
+//    gl.uniform3f(lightPositionUniform[2], vectorLight[2].e(1), vectorLight[2].e(2), vectorLight[2].e(3));
 
     mvTranslate([posX,posY,posZ]);
     mvRotate(yRotation, [0, 1, 0]);
