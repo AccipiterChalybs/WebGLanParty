@@ -18,7 +18,7 @@ var canvas; //HTML5 canvas object that uses webGL
 var vertexBuffer=[]; //buffer to hold vertices
 var normalBuffer=[]; //buffer to hold vertex normals
 var textureBuffer=[]; //buffer to hold texture coordinates
-//var tangentBuffer=[];
+var tangentBuffer=[];
 var indexBuffer=[]; //buffer to hold vertex indices
 
 var glProgram; //program holding the shaders
@@ -26,7 +26,7 @@ var glProgram; //program holding the shaders
 var vertexPositionAttribute; //pointer to vertexPosition in the shader
 var vertexNormalAttribute; //pointer to vertexNormal in the shader
 var vertexTextureAttribute; //pointer to vertexTexture in the shader
-//var vertexTangentAttribute;
+var vertexTangentAttribute;
 
 var pUniform; //perspective matrix
 var nUniform; //normal matrix
@@ -471,8 +471,8 @@ function initShaders() {
   vertexTextureAttribute = gl.getAttribLocation(glProgram, "vertexTexture");
   gl.enableVertexAttribArray(vertexTextureAttribute);
 
-  //vertexTangentAttribute = gl.getAttribLocation(glProgram, "vertexTangent");
-  //gl.enableVertexAttribArray(vertexTangentAttribute);
+  vertexTangentAttribute = gl.getAttribLocation(glProgram, "vertexTangent");
+ gl.enableVertexAttribArray(vertexTangentAttribute);
   
   pUniform = gl.getUniformLocation(glProgram, "uPMatrix"); //perspective matrix
   nUniform = gl.getUniformLocation(glProgram, "normalMatrix"); //normal matrix
@@ -569,9 +569,9 @@ function initBuffers() {
       gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[obj]);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoords[obj]), gl.STATIC_DRAW);
     
-     // tangentBuffer[obj] = gl.createBuffer();
-     // gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[obj]);
-     // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(tangents[obj]), gl.STATIC_DRAW);
+      tangentBuffer[obj] = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[obj]);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(tangents[obj]), gl.STATIC_DRAW);
 
       indexBuffer[obj] = gl.createBuffer();
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[obj]);
@@ -655,17 +655,17 @@ function drawScene() {
     gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[playerObj]);
     gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
 
-  //  gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[playerObj]);
-  //  gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[playerObj]);
+    gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
   
   
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture[playerTexture]);
     gl.uniform1i(samplerUniform, 0);
 
-   // gl.activeTexture(gl.TEXTURE1);
-   // gl.bindTexture(gl.TEXTURE_2D, texture[2]);
-   // gl.uniform1i(normalMapUniform, 1);
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, texture[2]);
+    gl.uniform1i(normalMapUniform, 1);
   
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[playerObj]);
     setNormalMatrix();
@@ -682,16 +682,16 @@ function drawScene() {
   gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[backgroundObj]);
   gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
 
- // gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[backgroundObj]);
- // gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
+  gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[backgroundObj]);
+  gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
      
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, texture[backgroundTexture]);
   gl.uniform1i(samplerUniform, 0);
   
-//  gl.activeTexture(gl.TEXTURE1);
- // gl.bindTexture(gl.TEXTURE_2D, texture[3]);
-//  gl.uniform1i(normalMapUniform, 1);
+  gl.activeTexture(gl.TEXTURE1);
+  gl.bindTexture(gl.TEXTURE_2D, texture[3]);
+  gl.uniform1i(normalMapUniform, 1);
         
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[backgroundObj]);
   loadIdentity();
@@ -845,7 +845,7 @@ for (var v=0; v<linesForSwoop.length*3; v++)
  var vtx=[];
 var nor=[];
 var tex=[];
-value[3]=value[3].substr(0,value[3].length-1) //seems to be a line break character making it seem different
+//value[3]=value[3].substr(0,value[3].length-1) //seems to be a line break character making it seem different
 
                 for (var i = 1; i < 4; i++) {
                     
