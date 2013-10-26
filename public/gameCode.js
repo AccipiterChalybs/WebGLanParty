@@ -99,7 +99,8 @@ var AUDIO_HIT_BY_ENEMY = 2;
 //camera vars
 var CAMERA_Y_ROTATION_SPEED=0.2;
 var CAMERA_X_ROTATION_SPEED=0.2;
-var CAMERA_MOVE_SPEED = 0.01;
+var CAMERA_MOVE_SPEED = 0.02;
+var CAMERA_X_BOUND=88;
 var camRotX = 0;
 var camRotY = 0;
 var camX=0; camY=0; camZ=0;
@@ -399,6 +400,9 @@ function moveCallback(e) {
 
    camRotY+=movementX*CAMERA_Y_ROTATION_SPEED; //movement on x = rotation around y axis
    camRotX+=movementY*CAMERA_X_ROTATION_SPEED; //movement on y = rotation around x axis
+//keep it in bounds
+   if (camRotX>CAMERA_X_BOUND) camRotX = CAMERA_X_BOUND;
+   if (camRotX<-CAMERA_X_BOUND) camRotX = -CAMERA_X_BOUND;
 }
 
 /* Code From:
