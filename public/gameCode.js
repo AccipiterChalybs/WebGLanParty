@@ -718,40 +718,47 @@ function drawScene() {
 
 
 
-  //other players
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[otherPlayerObj]);
-  gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
-  
-  gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer[otherPlayerObj]);
-  gl.vertexAttribPointer(vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
-    
-  gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[otherPlayerObj]);
-  gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
+  //other players--------------------------------------------
+  for (var p=0; p<numPlayers; p++)
+  {
+      if (p!=playerId)
+      {
+          gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[otherPlayerObj]);
+          gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+          
+          gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer[otherPlayerObj]);
+          gl.vertexAttribPointer(vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
+            
+          gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[otherPlayerObj]);
+          gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
 
-//  gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[otherPlayerObj]);
- // gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
-     
-  gl.activeTexture(gl.TEXTURE0);
-  gl.bindTexture(gl.TEXTURE_2D, texture[otherPlayerTexture]);
-  gl.uniform1i(samplerUniform, 0);
-  
- // gl.activeTexture(gl.TEXTURE1);
- // gl.bindTexture(gl.TEXTURE_2D, texture[3]);
-  //gl.uniform1i(normalMapUniform, 1);
-        
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[otherPlayerObj]);
-  loadIdentity();
-  mvRotate(camRotX, [1,0,0])
-  mvRotate(camRotY, [0,1,0])  
-  mvTranslate([-camX, -camY, -camZ]);
-  mvTranslate([0,mapY,-20]);
-  setNormalMatrix();
-  setModelViewMatrix();
+         // gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[otherPlayerObj]);
+         // gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
+             
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, texture[otherPlayerTexture]);
+          gl.uniform1i(samplerUniform, 0);
+          
+         // gl.activeTexture(gl.TEXTURE1);
+         // gl.bindTexture(gl.TEXTURE_2D, texture[3]);
+          //gl.uniform1i(normalMapUniform, 1);
+                
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[otherPlayerObj]);
+          loadIdentity();
+          mvRotate(camRotX, [1,0,0])
+          mvRotate(camRotY, [0,1,0])  
+          mvTranslate([-camX, -camY, -camZ]);
+          mvTranslate([otherPosX[i], otherPosY[i], otherPosZ[i]]);
+          setNormalMatrix();
+          setModelViewMatrix();
 
-  gl.drawElements(gl.TRIANGLES, indices[otherPlayerObj].length, gl.UNSIGNED_SHORT, 0);
+          gl.drawElements(gl.TRIANGLES, indices[otherPlayerObj].length, gl.UNSIGNED_SHORT, 0);
+      }
+  }
 
 
-   //background
+
+   //background--------------------------------------------------
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[backgroundObj]);
   gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
   
