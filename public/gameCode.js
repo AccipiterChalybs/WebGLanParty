@@ -829,7 +829,7 @@ function act(dt)
     posX+=dX;
     posZ+=dZ;
 
-    socket.emit('fPos', playerId, posX, posY, posZ);
+    socket.emit('fPos', [playerId, posX, posY, posZ]);
 }
 
 function loadObj() 
