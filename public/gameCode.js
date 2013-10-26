@@ -116,7 +116,8 @@ var camX=0; camY=0; camZ=0;
 //player vars
 var playerName="";
 var customizeCode="";
-var posX=0,posY=7, posZ=0;
+var MIN_POS_Y=7;
+var posX=0,posY=MIN_POS_Y, posZ=0;
 var PlayerYAccel=0;
 
 var yRotation=0.0;
@@ -741,24 +742,24 @@ function act(dt)
         dX = Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
         dZ = Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
     }
-    if (spacePressed && posY<=1)
+    if (spacePressed && posY<=MIN_POS_Y+1)
     {
        PlayerYAccel=10;
     }
 
-    if (posY>0)
+    if (posY>MIN_POS_Y)
     {
        posY+=PlayerYAccel;
        PlayerYAccel--;
     }
-    if (posY<0)
+    if (posY<MIN_POS_Y)
     {
-      posY=0;
+      posY=MIN_POS_Y;
       PlayerYAccel=0;
     }
 
     posX+=dX;
-    posY+=dZ;
+    posZ+=dZ;
 
     socket.emit('pos', dX, dZ);
 }
