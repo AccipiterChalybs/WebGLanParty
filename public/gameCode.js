@@ -132,7 +132,7 @@ function start()
     chatConsole = document.getElementById("ChatBox");
 
     canvas = document.getElementById("glCanvas");
-    
+
     document.onkeydown = function(event) {
         keyDown(event);
     };   
@@ -187,6 +187,15 @@ function start()
         placeHolder = document.getElementById("placeHolderA");
         placeHolder.style.visibility = "visible";
     }
+}
+
+function lockPointer()
+{
+    canvas.requestPointerLock = canvas.requestPointerLock ||
+                     canvas.mozRequestPointerLock ||
+                     canvas.webkitRequestPointerLock;
+    // Ask the browser to lock the pointer
+    canvas.requestPointerLock();
 }
 
 function keyDown(event)
@@ -357,11 +366,11 @@ function writeTex(textBox, stringS)
     textBox.appendChild(linebreak);
 }
 
-function changeCallback ()
+function changeCallback()
 {
-  if (document.pointerLockElement === requestedElement ||
-      document.mozPointerLockElement === requestedElement ||
-      document.webkitPointerLockElement === requestedElement) {
+  if (document.pointerLockElement === canvas ||
+      document.mozPointerLockElement === canvas ||
+      document.webkitPointerLockElement === canvas) {
       // Pointer was just locked
       // Enable the mousemove listener
       document.addEventListener("mousemove", this.moveCallback, false);
@@ -383,8 +392,8 @@ function moveCallback(e) {
       e.webkitMovementY   ||
       0;
 
-   camRotX+=movementX/10;
-   camRotY+=movementY/10;
+   camRotY+=movementX/10; //movement on x = rotation around y axis
+   camRotX+=movementY/10; //movement on y = rotation around x axis
 }
 
 /* Code From:
