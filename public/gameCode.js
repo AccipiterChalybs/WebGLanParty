@@ -121,7 +121,7 @@ var playerId;
 var MIN_POS_Y=11;
 var posX=0,posY=MIN_POS_Y, posZ=0;
 var PlayerYAccel=0;
-var JUMP_ACCEL=2.5;
+var JUMP_ACCEL=1;
 
 var xRotation=0.0;
 var yRotation=0.0;
@@ -755,7 +755,7 @@ function drawScene() {
           mvRotate(camRotY, [0,1,0])  
           mvTranslate([-camX, -camY, -camZ]);
           mvTranslate([otherPosX[p], otherPosY[p], otherPosZ[p]]);
-          myRotate(90, [0,1,0]);
+          mvRotate(90, [0,1,0]);
           mvRotate(-otherRotY[p], [0, 1, 0]);
           setNormalMatrix();
           setModelViewMatrix();
