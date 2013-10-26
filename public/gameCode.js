@@ -149,8 +149,9 @@ function start()
         playerId = data;
     });
     socket.on('fPos', function (data) {
+
         var incId = data[0];
-        if (incId+1 > numPlayers) numPlayers == incId+1;
+        if (incId+1 > numPlayers) numPlayers = incId+1;
         if (incId!=playerId)
         {
             otherPosX[incId] = data[1];
