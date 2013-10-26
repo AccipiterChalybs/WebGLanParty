@@ -20,15 +20,13 @@
           uniform mat4 uMVMatrix;
           uniform mat4 uPMatrix;
           uniform mat3 normalMatrix;
-          
+  
           uniform mediump vec3 lightPosition;
           uniform mediump vec3 lightPosition2;
           uniform mediump vec3 lightPosition3;
           
-          varying mediump vec3 normal;
-          varying mediump vec3 lightDistanceVector1;
-          varying mediump vec3 lightDistanceVector2;
-          varying mediump vec3 lightDistanceVector3;
+          varying mediump vec3 lightDistanceVector;
+          varying mediump vec3 lightVector;
           varying mediump vec2 texCoord;
           
           void main(void) 
@@ -64,7 +62,7 @@
       
                 mediump float distance1 = length(lightDistanceVector);
 
-                mediump vec3 lightDirection = normalize(lightVector1);
+                mediump vec3 lightDirection = normalize(lightVector);
                    
                 mediump float dLevel = max(0.0, dot(nNormal, lightDirection));
                 mediump float attenuation = min(lightDistance/(distance1*distance1),1.0);
