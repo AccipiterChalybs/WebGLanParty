@@ -670,6 +670,9 @@ function drawScene() {
     
   gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[backgroundObj]);
   gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[backgroundObj]);
+    gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
      
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, texture[backgroundTexture]);
