@@ -11,8 +11,7 @@ var io = require('socket.io').listen(server);
  app.use(express.static(path.join(__dirname, 'public')));
 
 io.sockets.on('connection', function (socket){
-   socket.emit('chat',  'world' );
-   socket.on('inc', function(data) {io.sockets.emit("chat", data)});
+   socket.on('chat', function(data) {io.sockets.emit("chat", data)});
 });
 
 // Route for everything else.
