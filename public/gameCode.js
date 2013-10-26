@@ -417,10 +417,10 @@ function moveCallback(e) {
       0;
 
    yRotation+=movementX*CAMERA_Y_ROTATION_SPEED; //movement on x = rotation around y axis
-   yRotation+=movementY*CAMERA_X_ROTATION_SPEED; //movement on y = rotation around x axis
+   xRotation+=movementY*CAMERA_X_ROTATION_SPEED; //movement on y = rotation around x axis
 //keep it in bounds
-   if (yRotation>CAMERA_X_BOUND) yRotation = CAMERA_X_BOUND;
-   if (yRotation<-CAMERA_X_BOUND) yRotation = -CAMERA_X_BOUND;
+   if (xRotation>CAMERA_X_BOUND) xRotation = CAMERA_X_BOUND;
+   if (xRotation<-CAMERA_X_BOUND) xRotation = -CAMERA_X_BOUND;
 }
 
 /* Code From:
