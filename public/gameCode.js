@@ -82,35 +82,13 @@ var score=0;
 
 //textures
 var SWOOP_TEXTURE=0;
-var METAL_SWOOP_TEXTURE=2;
-var OBSTACLE_TEXTURE=3;
-var BACKGROUND_TEXTURE=4;
-var NEWS_TEXTURE=5;
-var SCORE_TEXTURE=6;
-var NEWS_MAIN_MENU_TEXTURE=7;
-var NEWS_GAME_OVER_TEXTURE=8;
-var B_SWOOPY=1;
-var B_MATRIX=12;
-var B_OWLIE=9;
-var B_SNOW=10;
-var B_WIRE=11;
-var B_NEON=12;
-var B_EVIL=13;
-var B_FIRE=14;
+var BACKGROUND_TEXTURE=1;
 
 //objects
-var MAX_OBJ=6;
+var MAX_OBJ=2;
 
 OWL_OBJ=0;
-BOX_OBJ=1;
-BG_OBJ=2;
-ITEM_BOX_OBJ=3;
-SCORE_OBJ=4;
-MENU_OBJ=5;
-
-//DO NOT include in MAX_OBJ (max obj should be same number as first)
-UNIFIED_MAZE_OBJ=6;
-CUSTOMIZE_OBJ=7;
+BG_OBJ=1;
 
 //audio
 var soundPlayer=[];
@@ -123,121 +101,19 @@ var worldX=0,worldY=0, worldZ=0;
 var camRotX = 50;
 var camX=0; camY=0; camZ=0;
 
-
-
 //player vars
 var playerName="";
 var customizeCode="";
-var typingName=false;
 var SWOOP_START_Z=-1;
 var posX=0,posY=1.4, posZ=SWOOP_START_Z;
 
 var yRotation=0.0;
 var playerObj=OWL_OBJ;
 var playerTexture=SWOOP_TEXTURE;
-var SWOOP_SPEED = 0.027; //const: player speed
-
-//enemy vars
-var STARTING_ENEMIES=2;
-var MAX_ENEMIES=4;
-var enemyNum=2;
-var ePosX=[], ePosY=[], ePosZ=[];
-var pathX=[];
-var pathY=[];
-var eCurrentNode=[];
-var eYRotation=[];
-var enemyPower=32106311;
-var enemyObj=OWL_OBJ;
-var enemyTexture=METAL_SWOOP_TEXTURE;
-var ENEMY_SPEED=0.005;
-var ENEMY_SPEED_INC=0.002;
-var ENEMY_SPEED_LEVEL_INC=0.002;
-
-//item vars
-var itemNum=5;
-var ITEM_SCORE=100;
-var itemPosX=[], itemPosY=[], itemPosZ=[];
-var itemXRotation=20;
-var itemYRotation=0;
-var itemYRotSpeed=0.1;
-var itemObj=ITEM_BOX_OBJ;
-var itemTexture=NEWS_TEXTURE;
-
-//power-up vars
-var powerUpNum=2;
-var powerPosX=[], powerPosY=[], powerPosZ=[];
-var powerXRotation=20;
-var powerYRotation=0;
-var powerYRotSpeed=0.1;
-var powerObj=OWL_OBJ
-var powerTexture=NEWS_TEXTURE;
-
-var powerUpType=[];
-var POWER_UP_TYPE_NUM=5;
-var POWER_UP_SPEED_UP=0;
-var POWER_UP_HEAT_VISION=1;
-var POWER_UP_INVINCIBILITY=2;
-var POWER_UP_FLARE = 3;
-var POWER_UP_BONUS_LEVEL=4;
-
-var POWER_UP_LENGTH=6400;
-var POWER_UP_RESPAWN=7777;
-var POWER_SPEED=false;
-var SPEED_UP_AMOUNT=0.0125;
-var POWER_HEAT_VISION=false;
-var POWER_INVINCIBILITY=false;
-var POWER_FLARE=false;
-var FLARE_NEW_LIGHT=525;
-
-var tempPowerNum;
-
-//score vars
-var scoreNum=6; //digits for score
-var scoreObj=SCORE_OBJ;
-var scoreTexture=SCORE_TEXTURE;
-
-//obstacle vars
-var obstacleNumX=19; //old = 19
-var obstacleNumY=14; //old = 14
-var obstacleHidden = [] //two dimensional array to be further initialized in initGame
-var obstacleObj = UNIFIED_MAZE_OBJ;
-var obstacleTexture = OBSTACLE_TEXTURE;
-var OBSTACLE_SIZE=7;
-var OBSTACLE_OFFSET_Z=-21;
-var OBSTACLE_OFFSET_X=3.5;
-var BLOCKS_TO_REMOVE=64;
-var mazeDone=[];
-var playerObstacleStartX=9, playerObstacleStartY=obstacleNumY-4; //block to remove for player
-var TRAVEL_SPACE=1; //amount player can stray off of center
 
 //background vars
 var backgroundObj=BG_OBJ;
 var backgroundTexture=BACKGROUND_TEXTURE;
-
-//level change vars
-var LEVEL_CHANGE_SCORE = 1000;
-var currentLevel=1;
-var changingLevel=false;
-var entering=false;
-var mapY=0;
-var LEVEL_CHANGE_SPEED=0.024;
-var MAP_Y_MAX=40;
-var MAP_Y_MIN=-77;
-
-//newspaper vars (i.e. menu and game over screen vars
-var mainMenuActive;
-var gameOverActive;
-var pauseKeyActive=false;
-var NEWSPAPER_START_Z=-200;
-var NEWSPAPER_END_Z=-20;
-var newsPaperZ=NEWSPAPER_START_Z;
-var newsPaperRotationZ;
-var NEWSPAPER_SPEED=0.14;
-var NEWSPAPER_ROTATION_SPEED=4.2;
-var newsPaperObj = MENU_OBJ;
-var newsPaperTexture;
-
-var GAME_OVER_TIME=7777;
 
 var fps=0;
 var lastFPSCheck;
@@ -732,7 +608,7 @@ function drawScene() {
 function loadObj() 
 {
   var req = new XMLHttpRequest();
-  req.open("GET", "http://www.thefourthestate.net/OwlieGL/Swoop1.txt", false);
+  req.open("GET", "/resources/models/Swoop1.txt", false);
   req.onreadystatechange = function(){
      if (req.readyState===4) {
         if (req.status === 200){
@@ -744,7 +620,7 @@ function loadObj()
   req.send(null);
 
   req = new XMLHttpRequest();
-  req.open("GET", "http://www.thefourthestate.net/OwlieGL/BG.txt", false);
+  req.open("GET", "/resources/models/BG.txt", false);
   req.onreadystatechange = function(){
      if (req.readyState===4) {
         if (req.status === 200){
@@ -760,12 +636,12 @@ function loadTextures() {
   texture[0] = gl.createTexture();
   image[0] = new Image();
   image[0].onload = function() { handleTextureLoaded(image[0], texture[0]); }
-  image[0].src = "http://www.thefourthestate.net/OwlieGL/owlTexture1.png";
+  image[0].src = "/resources/images/owlTexture1.png";
   
   texture[1] = gl.createTexture();
   image[1] = new Image();
   image[1].onload = function() { handleTextureLoaded(image[1], texture[1]); }
-  image[1].src = "http://www.thefourthestate.net/OwlieGL/owlTexture2.png";
+  image[1].src = "/resources/images/bgTex1.png";
 }
  
 function handleTextureLoaded(image, texture) {
