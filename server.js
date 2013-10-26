@@ -51,10 +51,10 @@ io.sockets.on('connection', function (socket) {
           while (snapshot>0)
           {
               snapshotTimestamp[id][snapshot] = snapshotTimestamp[id][snapshot-1];
-              otherPosX[id][snapshot] = otherPosX[id][snapshot-1];
-              otherPosY[id][snapshot] = otherPosX[id][snapshot-1];
-              otherPosZ[id][snapshot] = otherPosX[id][snapshot-1];
-              otherRotY[id][snapshot] = otherPosX[id][snapshot-1];
+              playerPositionX[id][snapshot] = playerPositionX[id][snapshot-1];
+              playerPositionY[id][snapshot] = playerPositionY[id][snapshot-1];
+              playerPositionZ[id][snapshot] = playerPositionZ[id][snapshot-1];
+              playerRotationY[id][snapshot] = playerRotationY[id][snapshot-1];
               snapshot--;
           }
           snapshotTimestamp[id][0] = data[1];
