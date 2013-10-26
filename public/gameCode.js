@@ -97,7 +97,6 @@ var AUDIO_ITEM = 1;
 var AUDIO_HIT_BY_ENEMY = 2;
 
 //camera vars
-var worldX=0,worldY=0, worldZ=0;
 var camRotX = 0;
 var camRotY = 0;
 var camX=0; camY=0; camZ=0;
@@ -588,10 +587,8 @@ function drawScene() {
      setPerspectiveMatrix();
 
 
-//player 
-     camX=posX;
-     camZ=posZ+9+41.14-9.2;
-    camY=49.02+7.7;
+//player
+    camY=7.7;
 
      gl.uniform1f(lightingDisabledUniform, 0);
      gl.uniform2f(texCoordAddUniform,0,0);
