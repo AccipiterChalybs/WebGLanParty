@@ -468,22 +468,34 @@ function initShaders() {
   
   vertexTextureAttribute = gl.getAttribLocation(glProgram, "vertexTexture");
   gl.enableVertexAttribArray(vertexTextureAttribute);
-  
+
   vertexTangentAttribute = gl.getAttribLocation(glProgram, "vertexTangent");
   gl.enableVertexAttribArray(vertexTangentAttribute);
-
+  
   pUniform = gl.getUniformLocation(glProgram, "uPMatrix"); //perspective matrix
   nUniform = gl.getUniformLocation(glProgram, "normalMatrix"); //normal matrix
   mvUniform = gl.getUniformLocation(glProgram, "uMVMatrix"); //model-view matrix
   
   lightPositionUniform[0] = gl.getUniformLocation(glProgram, "lightPosition");
+  lightPositionUniform[1] = gl.getUniformLocation(glProgram, "lightPosition2");
+  lightPositionUniform[2] = gl.getUniformLocation(glProgram, "lightPosition3");
   lightMaterialUniform[0] = gl.getUniformLocation(glProgram, "lightMaterial");
+  lightMaterialUniform[1] = gl.getUniformLocation(glProgram, "lightMaterial2");
+  lightMaterialUniform[2] = gl.getUniformLocation(glProgram, "lightMaterial3");
   lightDistanceUniform[0] = gl.getUniformLocation(glProgram, "lightDistance");
+  lightDistanceUniform[1] = gl.getUniformLocation(glProgram, "lightDistance2");
   gl.uniform1f(lightDistanceUniform[0], LIGHT_DIST[0]);
+  gl.uniform1f(lightDistanceUniform[1], LIGHT_DIST[1]);
   gl.uniform3f(lightMaterialUniform[0], lightMaterial[0], lightMaterial[1], lightMaterial[2]); //player Light
-  
-  samplerUniform = gl.getUniformLocation(glProgram, "sampler");
-  normalMapUniform = gl.getUniformLocation(glProgram, "normalMap");
+
+  samplerUniform = gl.getUniformLocation(glProgram, "sampler")
+  normalMapUniform = gl.getUniformLocation(glProgram, "normalMap")  
+
+
+  lightingDisabledUniform = gl.getUniformLocation(glProgram, "lightingDisabled");
+  texCoordAddUniform = gl.getUniformLocation(glProgram, "texCoordAdd");
+  kernelUniform = gl.getUniformLocation(glProgram, "kernel[0]");
+  bloomBufferSizeUniform = gl.getUniformLocation(glProgram, "bufferTextureSize");
 }
 
 /* Code From:
@@ -649,7 +661,7 @@ function drawScene() {
     gl.uniform1i(samplerUniform, 0);
 
     gl.activeTexture(gl.TEXTURE1);
-    gl.bindTexture(gl.TEXTURE_2D, texture[1]);
+    gl.bindTexture(gl.TEXTURE_2D, texture[2]);
     gl.uniform1i(normalMapUniform, 1);
   
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[playerObj]);
@@ -657,7 +669,7 @@ function drawScene() {
     setModelViewMatrix();
     gl.drawElements(gl.TRIANGLES, indices[playerObj].length, gl.UNSIGNED_SHORT, 0);
 
-  //background
+   //background
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[backgroundObj]);
   gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
   
@@ -667,21 +679,21 @@ function drawScene() {
   gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[backgroundObj]);
   gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[backgroundObj]);
-    gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
+  gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[backgroundObj]);
+  gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
      
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, texture[backgroundTexture]);
   gl.uniform1i(samplerUniform, 0);
-
+  
   gl.activeTexture(gl.TEXTURE1);
-  gl.bindTexture(gl.TEXTURE_2D, texture[2]);
+  gl.bindTexture(gl.TEXTURE_2D, texture[17]);
   gl.uniform1i(normalMapUniform, 1);
         
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[backgroundObj]);
   loadIdentity();
+  mvTranslate([-worldX, -worldY, -worldZ])
   mvRotate(camRotX, [1,0,0])
-  mvRotate(camRotY, [0,1,0])  
   mvTranslate([-camX, -camY, -camZ]);
   mvTranslate([0,mapY,-20]);
   setNormalMatrix();
