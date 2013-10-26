@@ -97,6 +97,8 @@ var AUDIO_ITEM = 1;
 var AUDIO_HIT_BY_ENEMY = 2;
 
 //camera vars
+var CAMERA_Y_ROTATION_SPEED=0.1;
+var CAMERA_X_ROTATION_SPEED=0.1;
 var camRotX = 0;
 var camRotY = 0;
 var camX=0; camY=0; camZ=0;
@@ -365,6 +367,8 @@ function writeTex(textBox, stringS)
     textBox.appendChild(linebreak);
 }
 
+/* From http://www.html5rocks.com/en/tutorials/pointerlock/intro/
+ */
 function changeCallback()
 {
   if (document.pointerLockElement === canvas ||
@@ -377,10 +381,11 @@ function changeCallback()
       // Pointer was just unlocked
       // Disable the mousemove listener
       document.removeEventListener("mousemove", this.moveCallback, false);
-      this.unlockHook(this.canvas);
     }
 }
 
+/* Partly From http://www.html5rocks.com/en/tutorials/pointerlock/intro/
+ */
 function moveCallback(e) {
   var movementX = e.movementX ||
       e.mozMovementX          ||
@@ -391,8 +396,8 @@ function moveCallback(e) {
       e.webkitMovementY   ||
       0;
 
-   camRotY+=movementX/10; //movement on x = rotation around y axis
-   camRotX+=movementY/10; //movement on y = rotation around x axis
+   camRotY+=movementX*CAMERA_Y_ROTATION_SPEED; //movement on x = rotation around y axis
+   camRotX+=movementY*CAMERA_X_ROTATION_SPEED; //movement on y = rotation around x axis
 }
 
 /* Code From:
@@ -595,8 +600,8 @@ function drawScene() {
 
      loadIdentity();
   
-    mvRotate(camRotY, [0,1,0])  
     mvRotate(camRotX, [1,0,0])  
+    mvRotate(camRotY, [0,1,0])  
     mvTranslate([-camX, -camY, -camZ])
 
     var vectorLight = [];
@@ -652,8 +657,8 @@ function drawScene() {
         
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[backgroundObj]);
   loadIdentity();
-  mvRotate(camRotY, [0,1,0])  
   mvRotate(camRotX, [1,0,0])
+  mvRotate(camRotY, [0,1,0])  
   mvTranslate([-camX, -camY, -camZ]);
   mvTranslate([0,mapY,-20]);
   setNormalMatrix();
@@ -668,19 +673,23 @@ function act(dt)
 {
     if (upPressed)
     {
-        camZ -= dt * 0.005;
+        camX -= Math.sin(Math.PI*camRotY/180) * dt * 0.005;
+        camZ -= Math.cos(Math.PI*camRotY/180) * dt * 0.005;
     }
     if (downPressed)
     {
-        camZ += dt * 0.005;
+        camX += Math.sin(Math.PI*camRotY/180) * dt * 0.005;
+        camZ += Math.cos(Math.PI*camRotY/180) * dt * 0.005;
     }
     if (leftPressed)
     {
-        camX -= dt * 0.005;
+        camX -= Math.cos(Math.PI*camRotY/180) * dt * 0.005;
+        camZ -= Math.sin(Math.PI*camRotY/180) * dt * 0.005;
     }
     if (rightPressed)
     {
-        camX += dt * 0.005;
+        camX += Math.cos(Math.PI*camRotY/180) * dt * 0.005;
+        camZ += Math.sin(Math.PI*camRotY/180) * dt * 0.005;
     }
 }
 
