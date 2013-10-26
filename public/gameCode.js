@@ -127,8 +127,8 @@ function start()
         writeTex(chatConsole, data);
     });
 
-    inputConsole = document.getElementById("Input");    
-    chatConsole = document.getElementById("chatBox");
+    inputConsole = document.getElementById("InputBox");    
+    chatConsole = document.getElementById("ChatBox");
 
     document.onkeydown = function(event) {
         keyDown(event);
