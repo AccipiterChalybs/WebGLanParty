@@ -720,6 +720,7 @@ function drawScene() {
 
 function act(dt)
 {
+    var dX, dZ;
     if (upPressed)
     {
         dX = Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
@@ -740,7 +741,7 @@ function act(dt)
         dX = Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
         dZ = Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
     }
-    if (spacePressed && posY<=1;)
+    if (spacePressed && posY<=1)
     {
        PlayerYAccel=10;
     }
