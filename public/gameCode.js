@@ -749,7 +749,7 @@ function drawScene() {
           mvRotate(camRotX, [1,0,0])
           mvRotate(camRotY, [0,1,0])  
           mvTranslate([-camX, -camY, -camZ]);
-          mvTranslate([otherPosX[i], otherPosY[i], otherPosZ[i]]);
+          mvTranslate([otherPosX[p], otherPosY[p], otherPosZ[p]]);
           setNormalMatrix();
           setModelViewMatrix();
 
