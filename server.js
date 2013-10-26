@@ -64,7 +64,9 @@ io.sockets.on('connection', function (socket) {
           playerRotationY[id][0]=data[5];
       });
     socket.on('disconnect', function () {
-          io.sockets.emit('dc', socket.get('pid', function(){/*callback*/}));
+          socket.get('pid', function(data){
+            io.sockets.emit('dc', data);
+          }));
     });
 });
 
