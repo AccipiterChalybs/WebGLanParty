@@ -286,7 +286,6 @@ function start()
         placeHolder = document.getElementById("placeHolderA");
         placeHolder.style.visibility = "visible";
     }
-}  
 }
 
 function keyDown(event)
