@@ -21,7 +21,7 @@ var playerRotationY=[];
 io.sockets.on('connection', function (socket) {
 
   //code to set up new connection
-   socket.set('pid', numPlayers, function(){/*callback*/});
+   socket.set('pid', numPlayers, function (data) {/*callback*/});
    socket.emit("id", numPlayers);
    
    snapshotTimestamp[numPlayers]=[];
@@ -64,9 +64,9 @@ io.sockets.on('connection', function (socket) {
           playerRotationY[id][0]=data[5];
       });
     socket.on('disconnect', function () {
-          socket.get('pid', function(data){
+          socket.get('pid', function (data) {
             io.sockets.emit('dc', data);
-          }));
+          });
     });
 });
 
