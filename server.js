@@ -16,9 +16,11 @@ var playerPositionZ=[];
  app.use(express.static(path.join(__dirname, 'public')));
 
 io.sockets.on('connection', function (socket) {
+   socket.emit("id", numPlayers);
    playerPositionX[numPlayers]=0;
    playerPositionY[numPlayers]=0;
    playerPositionZ[numPlayers]=0;
+   numPlayers++;
    for (var i=0; i<numPlayers; i++)
    {
       socket.emit('fPos', [i, playerPositionX[i], playerPositionY[i], playerPositionZ[i]]);
