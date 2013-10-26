@@ -14,13 +14,12 @@ var downPressed = false;
 
 var gl; //webGL object
 var canvas; //HTML5 canvas object that uses webGL
-var brElement;
 
 var vertexBuffer=[]; //buffer to hold vertices
 var normalBuffer=[]; //buffer to hold vertex normals
 var textureBuffer=[]; //buffer to hold texture coordinates
-var indexBuffer=[]; //buffer to hold vertex indices
 var tangentBuffer=[];
+var indexBuffer=[]; //buffer to hold vertex indices
 
 var glProgram; //program holding the shaders
 
@@ -52,6 +51,9 @@ var lightMaterial=[1.0,1.0,1.0,     //player light
 
 var lightingDisabledUniform;
 var texCoordAddUniform;
+
+var kernelUniform;
+var bloomBufferSizeUniform;
 
 var perspectiveMatrix; //perspective matrix
 
@@ -616,6 +618,7 @@ function drawScene() {
      setPerspectiveMatrix();
 
 
+  gl.uniform1f(lightingDisabledUniform, 0);
 //player
     camY=7.7;
 
@@ -687,13 +690,13 @@ function drawScene() {
   gl.uniform1i(samplerUniform, 0);
   
   gl.activeTexture(gl.TEXTURE1);
-  gl.bindTexture(gl.TEXTURE_2D, texture[17]);
+  gl.bindTexture(gl.TEXTURE_2D, texture[3]);
   gl.uniform1i(normalMapUniform, 1);
         
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[backgroundObj]);
   loadIdentity();
-  mvTranslate([-worldX, -worldY, -worldZ])
   mvRotate(camRotX, [1,0,0])
+  mvRotate(camRotY, [0,1,0])  
   mvTranslate([-camX, -camY, -camZ]);
   mvTranslate([0,mapY,-20]);
   setNormalMatrix();
