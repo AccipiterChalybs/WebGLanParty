@@ -97,8 +97,9 @@ var AUDIO_ITEM = 1;
 var AUDIO_HIT_BY_ENEMY = 2;
 
 //camera vars
-var CAMERA_Y_ROTATION_SPEED=0.1;
-var CAMERA_X_ROTATION_SPEED=0.1;
+var CAMERA_Y_ROTATION_SPEED=0.2;
+var CAMERA_X_ROTATION_SPEED=0.2;
+var CAMERA_MOVE_SPEED = 0.01;
 var camRotX = 0;
 var camRotY = 0;
 var camX=0; camY=0; camZ=0;
@@ -673,23 +674,23 @@ function act(dt)
 {
     if (upPressed)
     {
-        camX -= Math.sin(Math.PI*camRotY/180) * dt * 0.005;
-        camZ -= Math.cos(Math.PI*camRotY/180) * dt * 0.005;
+        camX += Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        camZ -= Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (downPressed)
     {
-        camX += Math.sin(Math.PI*camRotY/180) * dt * 0.005;
-        camZ += Math.cos(Math.PI*camRotY/180) * dt * 0.005;
+        camX -= Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        camZ += Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (leftPressed)
     {
-        camX -= Math.cos(Math.PI*camRotY/180) * dt * 0.005;
-        camZ -= Math.sin(Math.PI*camRotY/180) * dt * 0.005;
+        camX -= Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        camZ -= Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (rightPressed)
     {
-        camX += Math.cos(Math.PI*camRotY/180) * dt * 0.005;
-        camZ += Math.sin(Math.PI*camRotY/180) * dt * 0.005;
+        camX += Math.cos(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
+        camZ += Math.sin(Math.PI*camRotY/180) * dt * CAMERA_MOVE_SPEED;
     }
 }
 
