@@ -131,6 +131,8 @@ function start()
     inputConsole = document.getElementById("InputBox");    
     chatConsole = document.getElementById("ChatBox");
 
+    canvas = document.getElementById("glCanvas");
+    
     document.onkeydown = function(event) {
         keyDown(event);
     };   
@@ -142,11 +144,11 @@ function start()
     var pointerLockValid = 'pointerLockElement' in document ||
     'mozPointerLockElement' in document ||
     'webkitPointerLockElement' in document;
-    element.requestPointerLock = element.requestPointerLock ||
-                     element.mozRequestPointerLock ||
-                     element.webkitRequestPointerLock;
+    canvas.requestPointerLock = canvas.requestPointerLock ||
+                     canvas.mozRequestPointerLock ||
+                     canvas.webkitRequestPointerLock;
     // Ask the browser to lock the pointer
-    element.requestPointerLock();
+    canvas.requestPointerLock();
 
     // Hook pointer lock state change events
     document.addEventListener('pointerlockchange', changeCallback, false);
@@ -157,7 +159,6 @@ function start()
     document.addEventListener("mousemove", this.moveCallback, false);
 
 
-    canvas = document.getElementById("glCanvas");
 
     initWebGL(canvas);      // Initialize the GL context
 
@@ -368,7 +369,7 @@ function changeCallback ()
       // Pointer was just unlocked
       // Disable the mousemove listener
       document.removeEventListener("mousemove", this.moveCallback, false);
-      this.unlockHook(this.element);
+      this.unlockHook(this.canvas);
     }
 }
 
