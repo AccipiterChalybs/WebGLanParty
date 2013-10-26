@@ -115,7 +115,7 @@ var camX=0; camY=0; camZ=0;
 
 //player vars
 var playerName="";
-var customizeCode="";
+var playerId;
 var MIN_POS_Y=7;
 var posX=0,posY=MIN_POS_Y, posZ=0;
 var PlayerYAccel=0;
@@ -124,6 +124,14 @@ var xRotation=0.0;
 var yRotation=0.0;
 var playerObj=OWL_OBJ;
 var playerTexture=SWOOP_TEXTURE;
+
+//other player vars
+var otherPlayerObj=OWL_OBJ;
+var otherPosX=[];
+var otherPosY=[];
+var otherPosZ=[];
+var otherPlayerTexture=SWOOP_TEXTURE;
+var numPlayers;
 
 //background vars
 var backgroundObj=BG_OBJ;
@@ -137,6 +145,25 @@ var lastFPSCheck;
 function start()
 {
     socket = io.connect(SERVER_ADDRESS);
+    socket.on('id', function (data) {
+        playerId = data;
+    });
+    socket.on('fPos', function (data) {
+        var incId = data[0];
+        if (incId > numPlayers) numPlayers == incId;
+        if (incId!=playerId)
+        {
+            otherPosX[incId] = data[1];
+            otherPosY[incId] = data[2];
+            otherPosZ[incId] = data[3];
+        }
+        else
+        {
+            posX = data[1];
+            posY = data[2];
+            posZ = data[3];
+        }
+    });
     socket.on('chat', function (data) {
         writeTex(chatConsole, data);
     });
@@ -688,6 +715,42 @@ function drawScene() {
     setModelViewMatrix();
     gl.drawElements(gl.TRIANGLES, indices[playerObj].length, gl.UNSIGNED_SHORT, 0);
 
+
+
+
+  //other players
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[otherPlayerObj]);
+  gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+  
+  gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer[otherPlayerObj]);
+  gl.vertexAttribPointer(vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
+    
+  gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[otherPlayerObj]);
+  gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
+
+//  gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[otherPlayerObj]);
+ // gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
+     
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, texture[otherPlayerTexture]);
+  gl.uniform1i(samplerUniform, 0);
+  
+ // gl.activeTexture(gl.TEXTURE1);
+ // gl.bindTexture(gl.TEXTURE_2D, texture[3]);
+  //gl.uniform1i(normalMapUniform, 1);
+        
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[otherPlayerObj]);
+  loadIdentity();
+  mvRotate(camRotX, [1,0,0])
+  mvRotate(camRotY, [0,1,0])  
+  mvTranslate([-camX, -camY, -camZ]);
+  mvTranslate([0,mapY,-20]);
+  setNormalMatrix();
+  setModelViewMatrix();
+
+  gl.drawElements(gl.TRIANGLES, indices[otherPlayerObj].length, gl.UNSIGNED_SHORT, 0);
+
+
    //background
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[backgroundObj]);
   gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
@@ -766,7 +829,7 @@ function act(dt)
     posX+=dX;
     posZ+=dZ;
 
-    socket.emit('pos', dX, dZ);
+    socket.emit('fPos', playerId, posX, posY, posZ);
 }
 
 function loadObj() 
