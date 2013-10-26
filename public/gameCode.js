@@ -382,8 +382,8 @@ function moveCallback(e) {
       e.webkitMovementY   ||
       0;
 
-   camRotX+=movementX/10f;
-   camRotY+=movementY/10f;
+   camRotX+=movementX/10;
+   camRotY+=movementY/10;
 }
 
 /* Code From:
