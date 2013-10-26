@@ -131,7 +131,7 @@ var otherPosX=[];
 var otherPosY=[];
 var otherPosZ=[];
 var otherPlayerTexture=SWOOP_TEXTURE;
-var numPlayers;
+var numPlayers=0;
 
 //background vars
 var backgroundObj=BG_OBJ;
@@ -150,7 +150,7 @@ function start()
     });
     socket.on('fPos', function (data) {
         var incId = data[0];
-        if (incId > numPlayers) numPlayers == incId;
+        if (incId+1 > numPlayers) numPlayers == incId+1;
         if (incId!=playerId)
         {
             otherPosX[incId] = data[1];
