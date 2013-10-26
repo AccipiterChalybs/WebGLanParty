@@ -30,7 +30,7 @@ io.sockets.on('connection', function (socket) {
    playerPositionZ[numPlayers]=[];
    playerRotationY[numPlayers]=[];
 
-   for (int i=0; i<NUM_SNAPSHOTS; i++)
+   for (var i=0; i<NUM_SNAPSHOTS; i++)
    {
        snapshotTimestamp[numPlayers][i]=new Date().getTime();
        playerPositionX[numPlayers][i]=0;

@@ -117,7 +117,7 @@ var camX=0; camY=0; camZ=0;
 
 //player vars
 var playerName="";
-var playerId;
+var playerId=0; //initialize it to this for now.
 var MIN_POS_Y=11;
 var posX=0,posY=MIN_POS_Y, posZ=0;
 var PlayerYAccel=0;
