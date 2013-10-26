@@ -117,7 +117,7 @@ var camX=0; camY=0; camZ=0;
 var playerName="";
 var customizeCode="";
 var posX=0,posY=7, posZ=0;
-var PlayerYAccel;
+var PlayerYAccel=0;
 
 var yRotation=0.0;
 var playerObj=OWL_OBJ;
