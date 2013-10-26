@@ -93,6 +93,9 @@ function sendFullPos(socket)
 
 function sendAllFullPos()
 {
-    io.sockets.emit('fPos', [i, new Date().getTime(), playerPositionX[i], playerPositionY[i], 
+    for (var i=0; i<numPlayers; i++)
+    {
+        io.sockets.emit('fPos', [i, new Date().getTime(), playerPositionX[i], playerPositionY[i], 
                                playerPositionZ[i], playerRotationY[i]]);
+    }
 }
