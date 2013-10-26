@@ -169,6 +169,7 @@ function start()
                 otherPosY[incId][snapshot] = otherPosX[incId][snapshot-1];
                 otherPosZ[incId][snapshot] = otherPosX[incId][snapshot-1];
                 otherRotY[incId][snapshot] = otherPosX[incId][snapshot-1];
+                snapshot--;
             }
             snapshotTimestamp[incId][0] = data[1];
             otherPosX[incId][0] = data[2];

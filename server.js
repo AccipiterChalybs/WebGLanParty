@@ -30,11 +30,14 @@ io.sockets.on('connection', function (socket) {
    playerPositionZ[numPlayers]=[];
    playerRotationY[numPlayers]=[];
 
-   snapshotTimestamp[numPlayers][0]=new Date().getTime();
-   playerPositionX[numPlayers][0]=0;
-   playerPositionY[numPlayers][0]=0;
-   playerPositionZ[numPlayers][0]=0;
-   playerRotationY[numPlayers][0]=0;
+   for (int i=0; i<NUM_SNAPSHOTS; i++)
+   {
+       snapshotTimestamp[numPlayers][i]=new Date().getTime();
+       playerPositionX[numPlayers][i]=0;
+       playerPositionY[numPlayers][i]=0;
+       playerPositionZ[numPlayers][i]=0;
+       playerRotationY[numPlayers][i]=0;
+   }
 
    numPlayers++;
 
@@ -52,6 +55,7 @@ io.sockets.on('connection', function (socket) {
               otherPosY[id][snapshot] = otherPosX[id][snapshot-1];
               otherPosZ[id][snapshot] = otherPosX[id][snapshot-1];
               otherRotY[id][snapshot] = otherPosX[id][snapshot-1];
+              snapshot--;
           }
           snapshotTimestamp[id][0] = data[1];
           playerPositionX[id][0]=data[2];
