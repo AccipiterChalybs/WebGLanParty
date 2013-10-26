@@ -259,6 +259,8 @@ function start()
         keyUp(event);
     };
 
+    canvas = document.getElementById("glCanvas");
+
     initWebGL(canvas);      // Initialize the GL context
 
     // Only continue if WebGL is available and working
