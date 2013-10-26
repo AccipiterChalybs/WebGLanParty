@@ -130,6 +130,9 @@ var playerTexture=RIFLE_TEXTURE;
 
 //other player vars
 var otherPlayerObj=PLAYER_OBJ;
+var otherPlayerDisconnected=[];
+var NUM_SNAPSHOTS = 5;
+var snapshotTimestamp=[];
 var otherPosX=[];
 var otherPosY=[];
 var otherPosZ=[];
@@ -158,18 +161,31 @@ function start()
         if (incId+1 > numPlayers) numPlayers = incId+1;
         if (incId!=playerId)
         {
-            otherPosX[incId] = data[1];
-            otherPosY[incId] = data[2];
-            otherPosZ[incId] = data[3];
-            otherRotY[incId] = data[4];
+            var snapshot=NUM_SNAPSHOTS-1;
+            while (snapshot>0)
+            {
+                snapshotTimestamp[incId][snapshot] = snapshotTimestamp[incId][snapshot-1];
+                otherPosX[incId][snapshot] = otherPosX[incId][snapshot-1];
+                otherPosY[incId][snapshot] = otherPosX[incId][snapshot-1];
+                otherPosZ[incId][snapshot] = otherPosX[incId][snapshot-1];
+                otherRotY[incId][snapshot] = otherPosX[incId][snapshot-1];
+            }
+            snapshotTimestamp[incId][0] = data[1];
+            otherPosX[incId][0] = data[2];
+            otherPosY[incId][0] = data[3];
+            otherPosZ[incId][0] = data[4];
+            otherRotY[incId][0] = data[5];
         }
         else
         {
-            posX = data[1];
-            posY = data[2];
-            posZ = data[3];
+       //     posX = data[1];
+      //      posY = data[2];
+      //      posZ = data[3];
         }
     });
+    socket.on('dc', function (data) {
+        otherPlayerDisconnected[data]=true;
+    })
     socket.on('chat', function (data) {
         writeTex(chatConsole, data);
     });
@@ -727,7 +743,7 @@ function drawScene() {
   //other players--------------------------------------------
   for (var p=0; p<numPlayers; p++)
   {
-      if (p!=playerId)
+      if (p!=playerId && !otherPlayerDisconnected[p])
       {
           gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[otherPlayerObj]);
           gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
@@ -754,9 +770,8 @@ function drawScene() {
           mvRotate(camRotX, [1,0,0])
           mvRotate(camRotY, [0,1,0])  
           mvTranslate([-camX, -camY, -camZ]);
-          mvTranslate([otherPosX[p], otherPosY[p], otherPosZ[p]]);
-          mvRotate(90, [0,1,0]);
-          mvRotate(-otherRotY[p], [0, 1, 0]);
+          mvTranslate([otherPosX[p][0], otherPosY[p][0], otherPosZ[p][0]]);
+          mvRotate(-otherRotY[p][0], [0, 1, 0]);
           setNormalMatrix();
           setModelViewMatrix();
 
@@ -844,7 +859,7 @@ function act(dt)
     posX+=dX;
     posZ+=dZ;
 
-    socket.emit('fPos', [playerId, posX, posY, posZ, yRotation]);
+    socket.emit('fPos', [playerId, new Date().getTime(), posX, posY, posZ, yRotation]);
 }
 
 function loadObj() 

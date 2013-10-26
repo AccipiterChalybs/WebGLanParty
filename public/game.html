@@ -65,7 +65,7 @@
                 mediump vec3 lightDirection = lightDistanceVector1/distance;
                    
                 mediump float dLevel = max(0.0, dot(nNormal, lightDirection));
-                mediump float attenuation = lightDistance/(distance*distance);
+                mediump float attenuation = 1.0;
                 mediump vec3 lightColor =  dLevel*attenuation*lightMaterial;
                 
                 distance = length(lightDistanceVector2);
