@@ -91,8 +91,8 @@ function sendFullPos(socket)
 {  
    for (var i=0; i<numPlayers; i++)
    {
-      socket.emit('fPos', [i, new Date().getTime(), playerPositionX[i], playerPositionY[i], 
-                               playerPositionZ[i], playerRotationY[i]]);
+      socket.emit('fPos', [i, new Date().getTime(), playerPositionX[i][0], playerPositionY[i][0], 
+                               playerPositionZ[i][0], playerRotationY[i][0]]);
    }
 }
 
@@ -100,7 +100,7 @@ function sendAllFullPos()
 {
     for (var i=0; i<numPlayers; i++)
     {
-        io.sockets.emit('fPos', [i, new Date().getTime(), playerPositionX[i], playerPositionY[i], 
-                               playerPositionZ[i], playerRotationY[i]]);
+        io.sockets.emit('fPos', [i, new Date().getTime(), playerPositionX[i][0], playerPositionY[i][0], 
+                               playerPositionZ[i][0], playerRotationY[i][0]]);
     }
 }
