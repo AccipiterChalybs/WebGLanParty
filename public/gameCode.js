@@ -214,7 +214,7 @@ function start()
         while (incId+1 > numBullets)
         {
            bSnapshotTimestamp[numBullets]=[];
-           bPosX[numPBullets]=[];
+           bPosX[numBullets]=[];
            bPosY[numBullets]=[];
            bPosZ[numBullets]=[];
            numBullets++;
@@ -497,13 +497,13 @@ function mouseUp(event)
     switch (event.button)
     {
         case 0:
-            leftMouseDown = true;
+            leftMouseDown = false;
             break;
         case 1:
-            middleMouseDown = true;
+            middleMouseDown = false;
             break;
         case 2:
-             rightMouseDown = true;
+             rightMouseDown = false;
              break;
     }
 }
