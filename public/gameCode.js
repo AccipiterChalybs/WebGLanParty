@@ -676,8 +676,8 @@ function initGame()
 {
    //starting positions:
    posY = 20;
-   posX = 101 * random()-50;
-   posZ = 101 * random()-50;
+   posX = 101 * Math.random()-50;
+   posZ = 101 * Math.random()-50;
 
    lastUpdateTime = (new Date).getTime(); //start the time
 }
