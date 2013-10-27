@@ -142,8 +142,7 @@ var numPlayers=0;
 //background vars
 var backgroundObj=BG_OBJ;
 var backgroundTexture=BACKGROUND_TEXTURE;
-
-var mapY=0;
+var MAP_SCALE=10;
 
 var fps=0;
 var lastFPSCheck;
@@ -845,9 +844,9 @@ function drawScene() {
   mvRotate(camRotX, [1,0,0])
   mvRotate(camRotY, [0,1,0])  
   mvTranslate([-camX, -camY, -camZ]);
-  mvTranslate([0,mapY,-20]);
+  mvTranslate([0,-1 * MAP_SCALE,0]);
   setNormalMatrix();
-  mvScale([5,5,5]);
+  mvScale([MAP_SCALE,MAP_SCALE,MAP_SCALE]);
   setModelViewMatrix();
 
   gl.drawElements(gl.TRIANGLES, indices[backgroundObj].length, gl.UNSIGNED_SHORT, 0);
