@@ -20,6 +20,8 @@ var bulletPositionZ=[];
 var bulletRotationX=[];
 var bulletRotationY=[];
 
+var lastTime;
+
 // Log the requests
  app.use(express.logger('dev'));
 
@@ -92,6 +94,7 @@ io.sockets.on('connection', function (socket) {
     res.send(404);//render('public/404.html');
    });
 
+lastTime = new Date.getTime();
 
 setInterval(function(){mainLoop()}, 50);
 
@@ -103,6 +106,8 @@ server.listen(8080);
 
 function mainLoop()
 {
+    var dt = new Date().getTime() - lastTime;
+    lastTime = new Date().getTime;
     moveBullets(dt);
     sendAllFullPos();
     sendAllBullets();
