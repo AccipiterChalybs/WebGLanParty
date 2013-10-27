@@ -83,7 +83,7 @@ io.sockets.on('connection', function (socket) {
           bulletRotationX[numBullets]=data[5];
           bulletRotationY[numBullets]=data[6];
 
-          moveBullet(b, 100);
+          moveBullet(numBullets, 100);
 
           bulletLife[numBullets] = START_BULLET_LIFE;
 
