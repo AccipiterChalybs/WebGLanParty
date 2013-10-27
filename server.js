@@ -117,13 +117,13 @@ function moveBullets()
 {
      for (var b=0; b < numBullets; b++)
      {
-        var horizontalMove = BULLET_SPEED * Math.cos(bulletRotationX);
+        var horizontalMove = BULLET_SPEED * Math.cos(bulletRotationX[b]);
 
-        bulletPositionY[b][0] += -1*BULLET_SPEED * Math.sin(bulletRotationX);
+        bulletPositionY[b] += -1*BULLET_SPEED * Math.sin(bulletRotationX[b]);
 
-        bulletPositionX[b][0] += horizontalMove * Math.sin(bulletRotationY);
+        bulletPositionX[b] += horizontalMove * Math.sin(bulletRotationY[b]);
 
-        bulletPositionZ[b][0] += horizontalMove * Math.cos(bulletRotationY);
+        bulletPositionZ[b] += horizontalMove * Math.cos(bulletRotationY[b]);
 
      }    
 }
@@ -150,7 +150,7 @@ function sendAllFullPos()
  {
      for (var b=0; b < numBullets; b++)
      {
-        io.sockets.emit('bPos', [b, new Date().getTime(), bulletPositionX[b][0], bulletPositionY[b][0], 
-                               bulletPositionZ[b][0] ]);
+        io.sockets.emit('bPos', [b, new Date().getTime(), bulletPositionX[b], bulletPositionY[b], 
+                               bulletPositionZ[b] ]);
      }
  }
