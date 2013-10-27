@@ -12,6 +12,7 @@ var rightPressed = false;
 var upPressed = false;
 var downPressed = false;
 var spacePressed = false;
+var mousePressed = false;
 
 var gl; //webGL object
 var canvas; //HTML5 canvas object that uses webGL
@@ -144,6 +145,11 @@ var backgroundObj=BG_OBJ;
 var backgroundTexture=BACKGROUND_TEXTURE;
 var MAP_SCALE=10;
 
+//light vars
+var lightTime;
+var LIGHT_MOVE_RADIUS = 30;
+var LIGHT_MOVE_SPEED = 0.005;
+
 var fps=0;
 var lastFPSCheck;
 
@@ -208,6 +214,16 @@ function start()
     document.onkeyup = function(event) {
         keyUp(event);
     };
+
+    document.onmousedown = function(event)
+    {
+        mouseDown(event);
+    }
+
+    document.onmouseup = function(event)
+    {
+        mouseUp(event);
+    }
 
     //from http://www.html5rocks.com/en/tutorials/pointerlock/intro/
     var pointerLockValid = 'pointerLockElement' in document ||
@@ -421,6 +437,16 @@ function keyUp(event)
             spacePressed=false;
         }
     }
+}
+
+function MouseDown(event)
+{
+    mouseDown = true;
+}
+
+function MouseUp(event);
+{
+    mouseDown = false;
 }
 
 function sendChatMessage(messageText)
@@ -648,6 +674,11 @@ function initBuffers() {
 
 function initGame()
 {
+   //starting positions:
+   posY = 20;
+   posX = 101 * random()-50;
+   posZ = 101 * random()-50;
+   
    lastUpdateTime = (new Date).getTime(); //start the time
 }
 
@@ -701,7 +732,8 @@ function drawScene() {
     mvTranslate([-camX, -camY, -camZ])
 
     var vectorLight = [];
-    vectorLight[0]=$V([0, LIGHT_HEIGHT, 0,1]);
+    vectorLight[0]=$V([LIGHT_MOVE_RADIUS*Math.cos(lightTime*LIGHT_MOVE_SPEED), LIGHT_HEIGHT,
+                       LIGHT_MOVE_RADIUS(Math.sin(lightTime*LIGHT_MOVE_SPEED), 1]);
     vectorLight[0] = mvMatrix.x(vectorLight[0]);
 
 //    vectorLight[1] = $V([powerPosX[0], LIGHT_HEIGHT+mapY, powerPosZ[0],1]);
@@ -856,6 +888,7 @@ function drawScene() {
 
 function act(dt)
 {
+    lightTime+=dt;
     var dX=0, dZ=0;
     if (upPressed)
     {
@@ -898,6 +931,11 @@ function act(dt)
     posZ+=dZ;
 
     socket.emit('fPos', [playerId, new Date().getTime(), posX, posY, posZ, yRotation]);
+
+    if (mouseDown)
+    {
+        socket.emit('nb', [playerId, new Date().getTime(), xRotation]);
+    }
 }
 
 function loadObj() 
