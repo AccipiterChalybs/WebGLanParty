@@ -13,7 +13,7 @@ var playerPositionZ=[];
 var playerRotationY=[];
 
 var numBullets=0;
-var BULLET_SPEED = 0.0005;
+var BULLET_SPEED = 0.5;
 var bulletPositionX=[];
 var bulletPositionY=[];
 var bulletPositionZ=[];
@@ -117,13 +117,14 @@ function moveBullets()
 {
      for (var b=0; b < numBullets; b++)
      {
-        var horizontalMove = BULLET_SPEED * Math.cos(bulletRotationX[b]);
+        //rotations are in degress
+        var horizontalMove = BULLET_SPEED * Math.cos(Math.PI*bulletRotationX[b]/180);
 
-        bulletPositionY[b] += -1*BULLET_SPEED * Math.sin(bulletRotationX[b]);
+        bulletPositionY[b] += -1*BULLET_SPEED * Math.sin(Math.PI*bulletRotationX[b]/180);
 
-        bulletPositionX[b] += horizontalMove * Math.sin(bulletRotationY[b]);
+        bulletPositionX[b] += horizontalMove * Math.sin(Math.PI*bulletRotationY[b]/180);
 
-        bulletPositionZ[b] += horizontalMove * Math.cos(bulletRotationY[b]);
+        bulletPositionZ[b] += -horizontalMove * Math.cos(Math.PI*bulletRotationY[b]/180);
 
      }    
 }
