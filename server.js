@@ -22,7 +22,7 @@ var bulletRotationX=[];
 var bulletRotationY=[];
 var bulletLife=[];
 
-var lastTime;
+var lastTime=0;
 
 // Log the requests
  app.use(express.logger('dev'));
@@ -114,7 +114,7 @@ server.listen(8080);
 function mainLoop()
 {
     var dt = new Date().getTime() - lastTime;
-    lastTime = new Date().getTime;
+    lastTime = new Date().getTime();
     moveBullets(dt);
     sendAllFullPos();
     sendAllBullets();
