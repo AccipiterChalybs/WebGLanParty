@@ -232,7 +232,6 @@ function start()
         bPosX[incId][0] = data[2];
         bPosY[incId][0] = data[3];
         bPosZ[incId][0] = data[4];
-        }
     });
     socket.on('dc', function (data) {
         otherPlayerDisconnected[data]=true;
@@ -256,12 +255,12 @@ function start()
     document.onmousedown = function(event)
     {
         mouseDown(event);
-    }
+    };
 
     document.onmouseup = function(event)
     {
         mouseUp(event);
-    }
+    };
 
     //from http://www.html5rocks.com/en/tutorials/pointerlock/intro/
     var pointerLockValid = 'pointerLockElement' in document ||
@@ -1047,7 +1046,7 @@ function act(dt)
 
     if (leftMouseDown && reloadTime<=0)
     {
-        socket.emit('nb', [playerId, new Date().getTime(), xRotation]);
+        socket.emit('nb', [playerId, new Date().getTime(), posX, posY, posZ, xRotation, yRotation]);
         reloadTime = 200;
     }
 }

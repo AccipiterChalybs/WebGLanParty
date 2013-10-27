@@ -94,7 +94,7 @@ io.sockets.on('connection', function (socket) {
     res.send(404);//render('public/404.html');
    });
 
-lastTime = new Date.getTime();
+lastTime = new Date().getTime();
 
 setInterval(function(){mainLoop()}, 50);
 
