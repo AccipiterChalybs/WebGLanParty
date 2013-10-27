@@ -146,7 +146,7 @@ var backgroundTexture=BACKGROUND_TEXTURE;
 var MAP_SCALE=10;
 
 //light vars
-var lightTime;
+var lightTime=0;
 var LIGHT_MOVE_RADIUS = 30;
 var LIGHT_MOVE_SPEED = 0.005;
 
@@ -215,7 +215,7 @@ function start()
         keyUp(event);
     };
 
-    document.onmousedown = function(event)
+  /*  document.onmousedown = function(event)
     {
         mouseDown(event);
     }
@@ -224,7 +224,7 @@ function start()
     {
         mouseUp(event);
     }
-
+*/
     //from http://www.html5rocks.com/en/tutorials/pointerlock/intro/
     var pointerLockValid = 'pointerLockElement' in document ||
     'mozPointerLockElement' in document ||
@@ -733,7 +733,7 @@ function drawScene() {
 
     var vectorLight = [];
     vectorLight[0]=$V([LIGHT_MOVE_RADIUS*Math.cos(lightTime*LIGHT_MOVE_SPEED), LIGHT_HEIGHT,
-                       LIGHT_MOVE_RADIUS(Math.sin(lightTime*LIGHT_MOVE_SPEED), 1]);
+                       LIGHT_MOVE_RADIUS*Math.sin(lightTime*LIGHT_MOVE_SPEED), 1]);
     vectorLight[0] = mvMatrix.x(vectorLight[0]);
 
 //    vectorLight[1] = $V([powerPosX[0], LIGHT_HEIGHT+mapY, powerPosZ[0],1]);
