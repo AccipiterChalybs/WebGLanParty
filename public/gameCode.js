@@ -783,7 +783,7 @@ function drawScene() {
           var snapshot=0;
           var priorSnapshot=0;
           var afterSnapshot=0;
-          var ratio=0;
+          var tRatio=0;
           while (snapshot<NUM_SNAPSHOTS)
           {
               if (snapshotTimestamp[p][snapshot]<renderTime)
@@ -800,13 +800,13 @@ function drawScene() {
           }
 
          var objPosX = otherPosX[p][priorSnapshot] + 
-                      time * (otherPosX[p][afterSnapshot] - otherPosX[p][priorSnapshot]);
+                      tRatio * (otherPosX[p][afterSnapshot] - otherPosX[p][priorSnapshot]);
          var objPosY = otherPosY[p][priorSnapshot] + 
-                      time * (otherPosY[p][afterSnapshot] - otherPosY[p][priorSnapshot]);
+                      tRatio * (otherPosY[p][afterSnapshot] - otherPosY[p][priorSnapshot]);
          var objPosZ = otherPosZ[p][priorSnapshot] + 
-                      time * (otherPosZ[p][afterSnapshot] - otherPosZ[p][priorSnapshot]);
+                      tRatio * (otherPosZ[p][afterSnapshot] - otherPosZ[p][priorSnapshot]);
          var objRotY = otherRotY[p][priorSnapshot] + 
-                      time * (otherRotY[p][afterSnapshot] - otherRotY[p][priorSnapshot]);
+                      tRatio * (otherRotY[p][afterSnapshot] - otherRotY[p][priorSnapshot]);
 
           mvTranslate([objPosX, objPosY, objPosZ]);
           mvRotate(-objRotY, [0, 1, 0]);
