@@ -439,12 +439,12 @@ function keyUp(event)
     }
 }
 
-function MouseDown(event)
+function mouseDown(event)
 {
     mouseDown = true;
 }
 
-function MouseUp(event);
+function mouseUp(event)
 {
     mouseDown = false;
 }
@@ -678,7 +678,7 @@ function initGame()
    posY = 20;
    posX = 101 * random()-50;
    posZ = 101 * random()-50;
-   
+
    lastUpdateTime = (new Date).getTime(); //start the time
 }
 
