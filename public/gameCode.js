@@ -82,8 +82,7 @@ var MOVES_UNTIL_RECALCULATE_PATH=5;
 
 paused=false;
 
-var codeConsole;
-var inputConsole;
+var RENDER_TIME_DELAY = 100; // render this many milliseconds back to reduce lag.
 
 //score
 var score=0;
@@ -664,6 +663,7 @@ function drawScene() {
 
     
     var currentTime = (new Date).getTime();
+    var renderTime = currentTime - RENDER_TIME_DELAY;
 
 //
 //fps++
@@ -779,8 +779,36 @@ function drawScene() {
           mvRotate(camRotX, [1,0,0])
           mvRotate(camRotY, [0,1,0])  
           mvTranslate([-camX, -camY, -camZ]);
-          mvTranslate([otherPosX[p][0], otherPosY[p][0], otherPosZ[p][0]]);
-          mvRotate(-otherRotY[p][0], [0, 1, 0]);
+
+          var snapshot=0;
+          var priorSnapshot=0;
+          var afterSnapshot=0;
+          var ratio=0;
+          while (snapshot<NUM_SNAPSHOTS)
+          {
+              if (snapshotTimestamp[p][snapshot]<renderTime)
+              {
+                  priorSnapshot=snapshot;
+                  afterSnapshot=snapshot-1;
+                  if (afterSnapshot<0){ afterSnapshot=0; }
+                  ratio = (renderTime - snapshotTimestamp[p][priorSnapshot]) / 
+                          (snapshotTimestamp[p][afterSnapshot] - priorSnapshot[p][priorSnapshot]);
+                  
+              }
+              snapshot++;
+          }
+
+         var objPosX = otherPosX[p][priorSnapshot] + 
+                      time * (otherPosX[p][afterSnapshot] - otherPosX[p][priorSnapshot]);
+         var objPosY = otherPosY[p][priorSnapshot] + 
+                      time * (otherPosY[p][afterSnapshot] - otherPosY[p][priorSnapshot]);
+         var objPosZ = otherPosZ[p][priorSnapshot] + 
+                      time * (otherPosZ[p][afterSnapshot] - otherPosZ[p][priorSnapshot]);
+         var objRotY = otherRotY[p][priorSnapshot] + 
+                      time * (otherRotY[p][afterSnapshot] - otherRotY[p][priorSnapshot]);
+
+          mvTranslate([objPosX, objPosY, objPosZ]);
+          mvRotate(-objRotY[p][0], [0, 1, 0]);
           setNormalMatrix();
           setModelViewMatrix();
 
