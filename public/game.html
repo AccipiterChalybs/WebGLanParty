@@ -118,7 +118,7 @@
     <div id = "ChatBox" style="position: absolute; z-index: 1; left: 70%; top: 164px;background-color: black; color: green;">
         </div>
 
-  <canvas id="glCanvas" width="300" height="180" onClick="lockPointer()" onMouseDown="mouseDown();" onMouseUp="mouseUp()">
+  <canvas id="glCanvas" width="300" height="180" onClick="lockPointer()" onMouseDown="mouseDown(event);" onMouseUp="mouseUp(event)">
     Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
   </canvas>
   <audio id="music1" hidden=true>
