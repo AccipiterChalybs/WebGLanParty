@@ -148,7 +148,7 @@ var bSnapshotTimestamp=[];
 var bPosX=[];
 var bPosY=[];
 var bPosZ=[];
-var reloadTime;
+var reloadTime=0;
 var bulletObj = RIFLE_OBJ;
 var bulletTexture = RIFLE_TEXTURE;
 
@@ -217,7 +217,7 @@ function start()
            bPosX[numPlayers]=[];
            bPosY[numPlayers]=[];
            bPosZ[numPlayers]=[];
-           numPBullets++;
+           numBullets++;
         }
         var snapshot=NUM_SNAPSHOTS-1;
         while (snapshot>0)
@@ -473,7 +473,6 @@ function keyUp(event)
         {
             spacePressed=false;
         }
-        if (keyCode==13) leftMouseDown =true;
     }
 }
 
@@ -1003,23 +1002,23 @@ function act(dt)
     var dX=0, dZ=0;
     if (upPressed)
     {
-        dX = Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
-        dZ = -Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dX += Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dZ += -Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (downPressed)
     {
-        dX = -Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
-        dZ = Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dX += -Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dZ += Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (leftPressed)
     {
-        dX = -Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
-        dZ = -Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dX += -Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dZ += -Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (rightPressed)
     {
-        dX = Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
-        dZ = Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dX += Math.cos(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
+        dZ += Math.sin(Math.PI*yRotation/180) * dt * CAMERA_MOVE_SPEED;
     }
     if (spacePressed && posY<=MIN_POS_Y+1)
     {
