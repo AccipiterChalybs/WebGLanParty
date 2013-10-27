@@ -1,4 +1,4 @@
-var SERVER_ADDRESS = 'http://ec2-54-219-137-123.us-west-1.compute.amazonaws.com/';
+var SERVER_ADDRESS = 'http://ec2-54-215-232-7.us-west-1.compute.amazonaws.com/';
 var socket;
 
 var chatMessage = "";
