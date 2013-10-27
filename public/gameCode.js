@@ -100,7 +100,7 @@ var MAX_OBJ=4;
 
 RIFLE_OBJ=0;
 PLAYER_OBJ=1;
-BOX_OBJ;=2;
+BOX_OBJ=2;
 BG_OBJ=3;
 
 //audio
@@ -233,6 +233,9 @@ function start()
         bPosX[incId][0] = data[2];
         bPosY[incId][0] = data[3];
         bPosZ[incId][0] = data[4];
+    });
+    socket.on('hit', function (data) {
+        if (playerId == data) {respawn();}
     });
     socket.on('dc', function (data) {
         otherPlayerDisconnected[data]=true;
@@ -734,12 +737,17 @@ function initBuffers() {
 
 function initGame()
 {
+    respawn();
+
+   lastUpdateTime = (new Date).getTime(); //start the time
+}
+
+function respawn()
+{
    //starting positions:
    posY = 70;
    posX = 101 * Math.random()-50;
    posZ = 101 * Math.random()-50;
-
-   lastUpdateTime = (new Date).getTime(); //start the time
 }
 
 function drawScene() {

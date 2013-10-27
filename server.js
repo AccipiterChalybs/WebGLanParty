@@ -16,6 +16,7 @@ var numBullets=0;
 var START_BULLET_LIFE=3000;
 var BULLET_SPEED = 0.1;
 var BULLET_HEADSTART_TIME = 100;
+var COLLISION_DIST = 5;:
 var bulletPositionX=[];
 var bulletPositionY=[];
 var bulletPositionZ=[];
@@ -128,6 +129,10 @@ function moveBullets(dt)
         if (bulletLife[b]>0)
         {
             moveBullet(b, dt);
+            for (var p=0; p<numPlayers; p++)
+            {
+                checkCollision(b, p);
+            }
         }
      }    
 }
@@ -144,6 +149,18 @@ function moveBullet(b, dt)
         bulletPositionX[b] += horizontalMove * Math.sin(Math.PI*bulletRotationY[b]/180) * dt;
 
         bulletPositionZ[b] += -horizontalMove * Math.cos(Math.PI*bulletRotationY[b]/180) * dt;
+}
+
+function checkCollision(b, p)
+{
+    var distX = bulletPositionX[b] - playerPositionX[p][0];
+    var distY = bulletPositionY[b] - playerPositionY[p][0];
+    var distZ = bulletPositionZ[b] - playerPositionZ[p][0];
+
+    if (Math.sqrt(distX*distX + distY * distY + distZ*distZ)<COLLISION_DIST)
+    {
+        io.sockets.emit("hit", p);
+    }
 }
 
 function sendFullPos(socket)
