@@ -13,12 +13,14 @@ var playerPositionZ=[];
 var playerRotationY=[];
 
 var numBullets=0;
-var BULLET_SPEED = 0.5;
+var START_BULLET_LIFE=3000;
+var BULLET_SPEED = 0.05;
 var bulletPositionX=[];
 var bulletPositionY=[];
 var bulletPositionZ=[];
 var bulletRotationX=[];
 var bulletRotationY=[];
+var bulletLife=[];
 
 var lastTime;
 
@@ -80,6 +82,11 @@ io.sockets.on('connection', function (socket) {
           bulletPositionZ[numBullets]=data[4];
           bulletRotationX[numBullets]=data[5];
           bulletRotationY[numBullets]=data[6];
+
+          moveBullet(b, 100);
+
+          bulletLife[numBullets] = START_BULLET_LIFE;
+
           numBullets++;
       });
     socket.on('disconnect', function () {
@@ -113,20 +120,29 @@ function mainLoop()
     sendAllBullets();
 }
 
-function moveBullets()
+function moveBullets(dt)
 {
      for (var b=0; b < numBullets; b++)
      {
-        //rotations are in degress
-        var horizontalMove = BULLET_SPEED * Math.cos(Math.PI*bulletRotationX[b]/180);
-
-        bulletPositionY[b] += -1*BULLET_SPEED * Math.sin(Math.PI*bulletRotationX[b]/180);
-
-        bulletPositionX[b] += horizontalMove * Math.sin(Math.PI*bulletRotationY[b]/180);
-
-        bulletPositionZ[b] += -horizontalMove * Math.cos(Math.PI*bulletRotationY[b]/180);
-
+        if (bulletLife[b]>0)
+        {
+            moveBullet(b, dt);
+        }
      }    
+}
+
+function moveBullet(b, dt)
+{
+        bulletLife[b]-=dt;
+
+        //rotations are in degress, so convert them into radians
+        var horizontalMove = BULLET_SPEED * Math.cos(Math.PI*bulletRotationX[b]/180) * dt;
+
+        bulletPositionY[b] += -1*BULLET_SPEED * Math.sin(Math.PI*bulletRotationX[b]/180) * dt;
+
+        bulletPositionX[b] += horizontalMove * Math.sin(Math.PI*bulletRotationY[b]/180) * dt;
+
+        bulletPositionZ[b] += -horizontalMove * Math.cos(Math.PI*bulletRotationY[b]/180) * dt;
 }
 
 function sendFullPos(socket)
@@ -151,7 +167,10 @@ function sendAllFullPos()
  {
      for (var b=0; b < numBullets; b++)
      {
-        io.sockets.emit('bPos', [b, new Date().getTime(), bulletPositionX[b], bulletPositionY[b], 
+        if (bulletLife[b]>0)
+        {
+            io.sockets.emit('bPos', [b, new Date().getTime(), bulletPositionX[b], bulletPositionY[b], 
                                bulletPositionZ[b] ]);
+        }
      }
  }
