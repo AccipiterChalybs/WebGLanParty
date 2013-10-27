@@ -190,9 +190,9 @@ function start()
             {
                 snapshotTimestamp[incId][snapshot] = snapshotTimestamp[incId][snapshot-1];
                 otherPosX[incId][snapshot] = otherPosX[incId][snapshot-1];
-                otherPosY[incId][snapshot] = otherPosX[incId][snapshot-1];
-                otherPosZ[incId][snapshot] = otherPosX[incId][snapshot-1];
-                otherRotY[incId][snapshot] = otherPosX[incId][snapshot-1];
+                otherPosY[incId][snapshot] = otherPosY[incId][snapshot-1];
+                otherPosZ[incId][snapshot] = otherPosZ[incId][snapshot-1];
+                otherRotY[incId][snapshot] = otherRotY[incId][snapshot-1];
                 snapshot--;
             }
             snapshotTimestamp[incId][0] = data[1];
@@ -214,9 +214,9 @@ function start()
         while (incId+1 > numBullets)
         {
            bSnapshotTimestamp[numBullets]=[];
-           bPosX[numPlayers]=[];
-           bPosY[numPlayers]=[];
-           bPosZ[numPlayers]=[];
+           bPosX[numPBullets]=[];
+           bPosY[numBullets]=[];
+           bPosZ[numBullets]=[];
            numBullets++;
         }
         var snapshot=NUM_SNAPSHOTS-1;
@@ -224,8 +224,8 @@ function start()
         {
             bSnapshotTimestamp[incId][snapshot] = bSnapshotTimestamp[incId][snapshot-1];
             bPosX[incId][snapshot] = bPosX[incId][snapshot-1];
-            bPosY[incId][snapshot] = bPosX[incId][snapshot-1];
-            bPosZ[incId][snapshot] = bPosX[incId][snapshot-1];
+            bPosY[incId][snapshot] = bPosY[incId][snapshot-1];
+            bPosZ[incId][snapshot] = bPosZ[incId][snapshot-1];
             snapshot--;
         }
         snapshotTimestamp[incId][0] = data[1];
