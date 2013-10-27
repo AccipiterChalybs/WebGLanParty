@@ -14,7 +14,7 @@ var playerRotationY=[];
 
 var numBullets=0;
 var START_BULLET_LIFE=3000;
-var BULLET_SPEED = 0.05;
+var BULLET_SPEED = 0.5;
 var bulletPositionX=[];
 var bulletPositionY=[];
 var bulletPositionZ=[];
@@ -136,7 +136,7 @@ function moveBullet(b, dt)
         bulletLife[b]-=dt;
 
         //rotations are in degress, so convert them into radians
-        var horizontalMove = BULLET_SPEED * Math.cos(Math.PI*bulletRotationX[b]/180) * dt;
+        var horizontalMove = BULLET_SPEED * Math.cos(Math.PI*bulletRotationX[b]/180);
 
         bulletPositionY[b] += -1*BULLET_SPEED * Math.sin(Math.PI*bulletRotationX[b]/180) * dt;
 
