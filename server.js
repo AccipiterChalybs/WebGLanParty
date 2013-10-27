@@ -14,7 +14,8 @@ var playerRotationY=[];
 
 var numBullets=0;
 var START_BULLET_LIFE=3000;
-var BULLET_SPEED = 0.5;
+var BULLET_SPEED = 0.1;
+var BULLET_HEADSTART_TIME = 100;
 var bulletPositionX=[];
 var bulletPositionY=[];
 var bulletPositionZ=[];
@@ -83,7 +84,7 @@ io.sockets.on('connection', function (socket) {
           bulletRotationX[numBullets]=data[5];
           bulletRotationY[numBullets]=data[6];
 
-          moveBullet(numBullets, 100);
+          moveBullet(numBullets, BULLET_HEADSTART_TIME);
 
           bulletLife[numBullets] = START_BULLET_LIFE;
 
