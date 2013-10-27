@@ -792,7 +792,8 @@ function drawScene() {
                   afterSnapshot=snapshot-1;
                   if (afterSnapshot<0){ afterSnapshot=0; }
                   ratio = (renderTime - snapshotTimestamp[p][priorSnapshot]) / 
-                          (snapshotTimestamp[p][afterSnapshot] - priorSnapshot[p][priorSnapshot]);
+                          (snapshotTimestamp[p][afterSnapshot] - snapshotTimestamp[p][priorSnapshot]);
+                          break;
                   
               }
               snapshot++;
@@ -808,7 +809,7 @@ function drawScene() {
                       time * (otherRotY[p][afterSnapshot] - otherRotY[p][priorSnapshot]);
 
           mvTranslate([objPosX, objPosY, objPosZ]);
-          mvRotate(-objRotY[p][0], [0, 1, 0]);
+          mvRotate(-objRotY, [0, 1, 0]);
           setNormalMatrix();
           setModelViewMatrix();
 
