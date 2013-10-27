@@ -927,7 +927,7 @@ function loadObj()
   req.send(null);
 
   req = new XMLHttpRequest();
-  req.open("GET", "/resources/models/BG.txt", false);
+  req.open("GET", "/resources/models/arena.txt", false);
   req.onreadystatechange = function(){
      if (req.readyState===4) {
         if (req.status === 200){
@@ -953,7 +953,7 @@ function loadTextures() {
   texture[2] = gl.createTexture();
   image[2] = new Image();
   image[2].onload = function() { handleTextureLoaded(image[2], texture[2]); }
-  image[2].src = "/resources/images/bgTex1.png";
+  image[2].src = "/resources/images/arenaAO.png";
   
   texture[3] = gl.createTexture();
   image[3] = new Image();
