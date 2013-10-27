@@ -12,7 +12,9 @@ var rightPressed = false;
 var upPressed = false;
 var downPressed = false;
 var spacePressed = false;
-var mousePressed = false;
+var leftMouseDown = false;
+var middleMouseDown = false;
+var rightMouseDown = false;
 
 var gl; //webGL object
 var canvas; //HTML5 canvas object that uses webGL
@@ -140,6 +142,16 @@ var otherRotY=[];
 var otherPlayerTexture=PLAYER_TEXTURE;
 var numPlayers=0;
 
+//bullet vars
+var numBullets=0;
+var bSnapshotTimestamp=[];
+var bPosX=[];
+var bPosY=[];
+var bPosZ=[];
+var reloadTime;
+var bulletObj = RIFLE_OBJ;
+var bulletTexture = RIFLE_TEXTURE;
+
 //background vars
 var backgroundObj=BG_OBJ;
 var backgroundTexture=BACKGROUND_TEXTURE;
@@ -196,6 +208,32 @@ function start()
       //      posZ = data[3];
         }
     });
+    socket.on('bPos', function (data) {
+
+        var incId = data[0];
+        while (incId+1 > numBullets)
+        {
+           bSnapshotTimestamp[numBullets]=[];
+           bPosX[numPlayers]=[];
+           bPosY[numPlayers]=[];
+           bPosZ[numPlayers]=[];
+           numPBullets++;
+        }
+        var snapshot=NUM_SNAPSHOTS-1;
+        while (snapshot>0)
+        {
+            bSnapshotTimestamp[incId][snapshot] = bSnapshotTimestamp[incId][snapshot-1];
+            bPosX[incId][snapshot] = bPosX[incId][snapshot-1];
+            bPosY[incId][snapshot] = bPosX[incId][snapshot-1];
+            bPosZ[incId][snapshot] = bPosX[incId][snapshot-1];
+            snapshot--;
+        }
+        snapshotTimestamp[incId][0] = data[1];
+        bPosX[incId][0] = data[2];
+        bPosY[incId][0] = data[3];
+        bPosZ[incId][0] = data[4];
+        }
+    });
     socket.on('dc', function (data) {
         otherPlayerDisconnected[data]=true;
     })
@@ -215,7 +253,7 @@ function start()
         keyUp(event);
     };
 
-  /*  document.onmousedown = function(event)
+    document.onmousedown = function(event)
     {
         mouseDown(event);
     }
@@ -224,7 +262,7 @@ function start()
     {
         mouseUp(event);
     }
-*/
+
     //from http://www.html5rocks.com/en/tutorials/pointerlock/intro/
     var pointerLockValid = 'pointerLockElement' in document ||
     'mozPointerLockElement' in document ||
@@ -441,12 +479,34 @@ function keyUp(event)
 
 function mouseDown(event)
 {
-    mouseDown = true;
+    switch (event.button)
+    {
+        case 0:
+            leftMouseDown = true;
+            break;
+        case 1:
+            middleMouseDown = true;
+            break;
+        case 2:
+             rightMouseDown = true;
+             break;
+    }
 }
 
 function mouseUp(event)
 {
-    mouseDown = false;
+    switch (event.button)
+    {
+        case 0:
+            leftMouseDown = true;
+            break;
+        case 1:
+            middleMouseDown = true;
+            break;
+        case 2:
+             rightMouseDown = true;
+             break;
+    }
 }
 
 function sendChatMessage(messageText)
@@ -793,17 +853,10 @@ function drawScene() {
             
           gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[otherPlayerObj]);
           gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
-
-         // gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer[otherPlayerObj]);
-         // gl.vertexAttribPointer(vertexTangentAttribute, 4, gl.FLOAT, false, 0, 0);
              
           gl.activeTexture(gl.TEXTURE0);
           gl.bindTexture(gl.TEXTURE_2D, texture[otherPlayerTexture]);
           gl.uniform1i(samplerUniform, 0);
-          
-         // gl.activeTexture(gl.TEXTURE1);
-         // gl.bindTexture(gl.TEXTURE_2D, texture[3]);
-          //gl.uniform1i(normalMapUniform, 1);
                 
           gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[otherPlayerObj]);
           loadIdentity();
@@ -848,7 +901,65 @@ function drawScene() {
       }
   }
 
+for (var b=0; b<numBullets; b++)
+  {
+      if (true)//bulletAlive[b]
+      {
+          gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[bulletObj]);
+          gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+          
+          gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer[bulletObj]);
+          gl.vertexAttribPointer(vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
+            
+          gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[bulletObj]);
+          gl.vertexAttribPointer(vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
+             
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, texture[bulletTexture]);
+          gl.uniform1i(samplerUniform, 0);
+                
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer[bulletObj]);
+          loadIdentity();
+          mvRotate(camRotX, [1,0,0])
+          mvRotate(camRotY, [0,1,0])  
+          mvTranslate([-camX, -camY, -camZ]);
 
+          var snapshot=0;
+          var priorSnapshot=0;
+          var afterSnapshot=0;
+          var tRatio=0;
+          while (snapshot<NUM_SNAPSHOTS)
+          {
+              if (bSnapshotTimestamp[b][snapshot]<renderTime)
+              {
+                  priorSnapshot=snapshot;
+                  afterSnapshot=snapshot-1;
+                  if (afterSnapshot<0){ afterSnapshot=0; }
+                  ratio = (renderTime - bSnapshotTimestamp[b][priorSnapshot]) / 
+                          (bSnapshotTimestamp[b][afterSnapshot] - bSnapshotTimestamp[b][priorSnapshot]);
+                          break;
+                  
+              }
+              snapshot++;
+          }
+
+         var objPosX = bPosX[b][priorSnapshot] + 
+                      tRatio * (bPosX[b][afterSnapshot] - bPosX[b][priorSnapshot]);
+         var objPosY = bPosY[b][priorSnapshot] + 
+                      tRatio * (bPosY[b][afterSnapshot] - bPosY[b][priorSnapshot]);
+         var objPosZ = bPosZ[b][priorSnapshot] + 
+                      tRatio * (bPosZ[b][afterSnapshot] - bPosZ[b][priorSnapshot]);
+  //       var objRotY = otherRotY[p][priorSnapshot] + 
+   //                   tRatio * (otherRotY[p][afterSnapshot] - otherRotY[p][priorSnapshot]);
+
+          mvTranslate([objPosX, objPosY, objPosZ]);
+        //  mvRotate(-objRotY, [0, 1, 0]);
+          setNormalMatrix();
+          setModelViewMatrix();
+
+          gl.drawElements(gl.TRIANGLES, indices[bulletObj].length, gl.UNSIGNED_SHORT, 0);
+      }
+  }
 
    //background--------------------------------------------------
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[backgroundObj]);
@@ -932,9 +1043,12 @@ function act(dt)
 
     socket.emit('fPos', [playerId, new Date().getTime(), posX, posY, posZ, yRotation]);
 
-    if (mouseDown)
+    if (reloadTime>0) { reloadTime-=dt; }
+
+    if (leftMouseDown && reloadTime<=0)
     {
         socket.emit('nb', [playerId, new Date().getTime(), xRotation]);
+        reloadTime = 200;
     }
 }
 

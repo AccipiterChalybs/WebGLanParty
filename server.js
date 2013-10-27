@@ -12,6 +12,14 @@ var playerPositionY=[];
 var playerPositionZ=[];
 var playerRotationY=[];
 
+var numBullets=0;
+var BULLET_SPEED = 0.0005;
+var bulletPositionX=[];
+var bulletPositionY=[];
+var bulletPositionZ=[];
+var bulletRotationX=[];
+var bulletRotationY=[];
+
 // Log the requests
  app.use(express.logger('dev'));
 
@@ -63,6 +71,15 @@ io.sockets.on('connection', function (socket) {
           playerPositionZ[id][0]=data[4];
           playerRotationY[id][0]=data[5];
       });
+    socket.on('nb', function(data){
+          var id = data[0];
+          bulletPositionX[numBullets]=data[2];
+          bulletPositionY[numBullets]=data[3];
+          bulletPositionZ[numBullets]=data[4];
+          bulletRotationX[numBullets]=data[5];
+          bulletRotationY[numBullets]=data[6];
+          numBullets++;
+      });
     socket.on('disconnect', function () {
           socket.get('pid', function (err, pid) {
             io.sockets.emit('dc', pid);
@@ -86,7 +103,24 @@ server.listen(8080);
 
 function mainLoop()
 {
+    moveBullets(dt);
     sendAllFullPos();
+    sendAllBullets();
+}
+
+function moveBullets()
+{
+     for (var b=0; b < numBullets; b++)
+     {
+        var horizontalMove = BULLET_SPEED * Math.cos(bulletRotationX);
+
+        bulletPositionY[b][0] += -1*BULLET_SPEED * Math.sin(bulletRotationX);
+
+        bulletPositionX[b][0] += horizontalMove * Math.sin(bulletRotationY);
+
+        bulletPositionZ[b][0] += horizontalMove * Math.cos(bulletRotationY);
+
+     }    
 }
 
 function sendFullPos(socket)
@@ -106,3 +140,12 @@ function sendAllFullPos()
                                playerPositionZ[i][0], playerRotationY[i][0]]);
     }
 }
+
+ function sendAllBullets()
+ {
+     for (var b=0; b < numBullets; b++)
+     {
+        io.sockets.emit('bPos', [b, new Date().getTime(), bulletPositionX[b][0], bulletPositionY[b][0], 
+                               bulletPositionZ[b][0] ]);
+     }
+ }
