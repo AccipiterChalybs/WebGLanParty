@@ -147,8 +147,8 @@ var MAP_SCALE=10;
 
 //light vars
 var lightTime=0;
-var LIGHT_MOVE_RADIUS = 30;
-var LIGHT_MOVE_SPEED = 0.005;
+var LIGHT_MOVE_RADIUS = 50;
+var LIGHT_MOVE_SPEED = 0.0005;
 
 var fps=0;
 var lastFPSCheck;
@@ -675,7 +675,7 @@ function initBuffers() {
 function initGame()
 {
    //starting positions:
-   posY = 20;
+   posY = 70;
    posX = 101 * Math.random()-50;
    posZ = 101 * Math.random()-50;
 
