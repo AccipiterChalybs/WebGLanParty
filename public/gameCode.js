@@ -108,7 +108,7 @@ var AUDIO_HIT_BY_ENEMY = 2;
 //camera vars
 var CAMERA_Y_ROTATION_SPEED=0.2;
 var CAMERA_X_ROTATION_SPEED=0.2;
-var CAMERA_MOVE_SPEED = 0.02;
+var CAMERA_MOVE_SPEED = 0.05;
 var CAMERA_X_BOUND=88;
 var camRotX = 0;
 var camRotY = 0;
@@ -847,6 +847,7 @@ function drawScene() {
   mvTranslate([-camX, -camY, -camZ]);
   mvTranslate([0,mapY,-20]);
   setNormalMatrix();
+  mvScale([5,5,5]);
   setModelViewMatrix();
 
   gl.drawElements(gl.TRIANGLES, indices[backgroundObj].length, gl.UNSIGNED_SHORT, 0);
