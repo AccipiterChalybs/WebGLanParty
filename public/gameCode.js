@@ -473,6 +473,7 @@ function keyUp(event)
         {
             spacePressed=false;
         }
+        if (keyCode==13) leftMouseDown =true;
     }
 }
 
