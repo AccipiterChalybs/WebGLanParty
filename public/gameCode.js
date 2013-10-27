@@ -66,7 +66,7 @@ var leftPressed=false, upPressed=false, rightPressed=false, downPressed=false; /
 
 var fuzzyBear=0;
 
-var CAMERA_MAX=200;
+var CAMERA_MAX=400;
 
 var startX=8, startY=7;
 
