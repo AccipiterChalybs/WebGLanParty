@@ -228,7 +228,7 @@ function start()
             bPosZ[incId][snapshot] = bPosZ[incId][snapshot-1];
             snapshot--;
         }
-        snapshotTimestamp[incId][0] = data[1];
+        bSnapshotTimestamp[incId][0] = data[1];
         bPosX[incId][0] = data[2];
         bPosY[incId][0] = data[3];
         bPosZ[incId][0] = data[4];
