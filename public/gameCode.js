@@ -96,11 +96,12 @@ var PLAYER_TEXTURE=1;
 var BACKGROUND_TEXTURE=2;
 
 //objects
-var MAX_OBJ=3;
+var MAX_OBJ=4;
 
 RIFLE_OBJ=0;
 PLAYER_OBJ=1;
-BG_OBJ=2;
+BOX_OBJ;=2;
+BG_OBJ=3;
 
 //audio
 var soundPlayer=[];
@@ -149,7 +150,7 @@ var bPosX=[];
 var bPosY=[];
 var bPosZ=[];
 var reloadTime=0;
-var bulletObj = RIFLE_OBJ;
+var bulletObj = BOX_OBJ;
 var bulletTexture = RIFLE_TEXTURE;
 
 //background vars
@@ -1072,6 +1073,18 @@ function loadObj()
         if (req.status === 200){
            text = req.responseText;
            processObj(PLAYER_OBJ);
+        }
+     }
+  }
+  req.send(null);
+
+  req = new XMLHttpRequest();
+  req.open("GET", "/resources/models/box.txt", false);
+  req.onreadystatechange = function(){
+     if (req.readyState===4) {
+        if (req.status === 200){
+           text = req.responseText;
+           processObj(BOX_OBJ);
         }
      }
   }
