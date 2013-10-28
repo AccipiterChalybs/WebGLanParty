@@ -957,23 +957,24 @@ for (var b=0; b<numBullets; b++)
               }
               snapshot++;
           }
-          if (priorSnapshot==-1){ /*skip rendering */ continue}
+          if (priorSnapshot!=-1)
+          { 
+             var objPosX = bPosX[b][priorSnapshot] + 
+                          tRatio * (bPosX[b][afterSnapshot] - bPosX[b][priorSnapshot]);
+             var objPosY = bPosY[b][priorSnapshot] + 
+                          tRatio * (bPosY[b][afterSnapshot] - bPosY[b][priorSnapshot]);
+             var objPosZ = bPosZ[b][priorSnapshot] + 
+                          tRatio * (bPosZ[b][afterSnapshot] - bPosZ[b][priorSnapshot]);
+      //       var objRotY = otherRotY[p][priorSnapshot] + 
+       //                   tRatio * (otherRotY[p][afterSnapshot] - otherRotY[p][priorSnapshot]);
 
-         var objPosX = bPosX[b][priorSnapshot] + 
-                      tRatio * (bPosX[b][afterSnapshot] - bPosX[b][priorSnapshot]);
-         var objPosY = bPosY[b][priorSnapshot] + 
-                      tRatio * (bPosY[b][afterSnapshot] - bPosY[b][priorSnapshot]);
-         var objPosZ = bPosZ[b][priorSnapshot] + 
-                      tRatio * (bPosZ[b][afterSnapshot] - bPosZ[b][priorSnapshot]);
-  //       var objRotY = otherRotY[p][priorSnapshot] + 
-   //                   tRatio * (otherRotY[p][afterSnapshot] - otherRotY[p][priorSnapshot]);
+              mvTranslate([objPosX, objPosY, objPosZ]);
+            //  mvRotate(-objRotY, [0, 1, 0]);
+              setNormalMatrix();
+              setModelViewMatrix();
 
-          mvTranslate([objPosX, objPosY, objPosZ]);
-        //  mvRotate(-objRotY, [0, 1, 0]);
-          setNormalMatrix();
-          setModelViewMatrix();
-
-          gl.drawElements(gl.TRIANGLES, indices[bulletObj].length, gl.UNSIGNED_SHORT, 0);
+              gl.drawElements(gl.TRIANGLES, indices[bulletObj].length, gl.UNSIGNED_SHORT, 0);
+        }
       }
   }
 
