@@ -134,7 +134,7 @@ var playerTexture=RIFLE_TEXTURE;
 //other player vars
 var otherPlayerObj=PLAYER_OBJ;
 var otherPlayerDisconnected=[];
-var NUM_SNAPSHOTS = 10;
+var NUM_SNAPSHOTS = 20;
 var snapshotTimestamp=[];
 var otherPosX=[];
 var otherPosY=[];
