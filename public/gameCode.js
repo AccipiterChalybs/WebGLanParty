@@ -85,7 +85,7 @@ var MOVES_UNTIL_RECALCULATE_PATH=5;
 
 paused=false;
 
-var RENDER_TIME_DELAY = 100; // render this many milliseconds back to reduce lag.
+var RENDER_TIME_DELAY = 75; // render this many milliseconds back to reduce lag.
 
 //score
 var score=0;
@@ -134,7 +134,7 @@ var playerTexture=RIFLE_TEXTURE;
 //other player vars
 var otherPlayerObj=PLAYER_OBJ;
 var otherPlayerDisconnected=[];
-var NUM_SNAPSHOTS = 25;
+var NUM_SNAPSHOTS = 10;
 var snapshotTimestamp=[];
 var otherPosX=[];
 var otherPosY=[];
