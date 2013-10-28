@@ -6,6 +6,7 @@ var io = require('socket.io').listen(server);
 
 var numPlayers=0;
 var NUM_SNAPSHOTS=5;
+var playerConnected=[];
 var snapshotTimestamp=[];
 var playerPositionX=[];
 var playerPositionY=[];
@@ -16,7 +17,7 @@ var numBullets=0;
 var START_BULLET_LIFE=3000;
 var BULLET_SPEED = 0.1;
 var BULLET_HEADSTART_TIME = 100;
-var COLLISION_DIST = 5;:
+var COLLISION_DIST = 5;
 var bulletPositionX=[];
 var bulletPositionY=[];
 var bulletPositionZ=[];
@@ -38,6 +39,7 @@ io.sockets.on('connection', function (socket) {
    socket.set('pid', numPlayers, function (data) {/*callback*/});
    socket.emit("id", numPlayers);
    
+   playerConnected[numPlayers] = true;
    snapshotTimestamp[numPlayers]=[];
    playerPositionX[numPlayers]=[];
    playerPositionY[numPlayers]=[];
@@ -93,6 +95,7 @@ io.sockets.on('connection', function (socket) {
       });
     socket.on('disconnect', function () {
           socket.get('pid', function (err, pid) {
+            playerConnected[pid] = false;
             io.sockets.emit('dc', pid);
           });
     });
@@ -176,8 +179,11 @@ function sendAllFullPos()
 {
     for (var i=0; i<numPlayers; i++)
     {
-        io.sockets.emit('fPos', [i, new Date().getTime(), playerPositionX[i][0], playerPositionY[i][0], 
+        if (playerConnected[i])
+        {
+            io.sockets.emit('fPos', [i, new Date().getTime(), playerPositionX[i][0], playerPositionY[i][0], 
                                playerPositionZ[i][0], playerRotationY[i][0]]);
+        }
     }
 }
 
