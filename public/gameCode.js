@@ -890,7 +890,7 @@ function drawScene() {
                   priorSnapshot=snapshot;
                   afterSnapshot=snapshot-1;
                   if (afterSnapshot<0){ afterSnapshot=0; }
-                  ratio = (renderTime - snapshotTimestamp[p][priorSnapshot]) / 
+                  tRatio = (renderTime - snapshotTimestamp[p][priorSnapshot]) / 
                           (snapshotTimestamp[p][afterSnapshot] - snapshotTimestamp[p][priorSnapshot]);
                           break;
                   
@@ -940,7 +940,7 @@ for (var b=0; b<numBullets; b++)
           mvTranslate([-camX, -camY, -camZ]);
 
           var snapshot=0;
-          var priorSnapshot=-1;
+          var priorSnapshot=-2;
           var afterSnapshot=0;
           var tRatio=0;
           while (snapshot<NUM_SNAPSHOTS)
@@ -950,14 +950,14 @@ for (var b=0; b<numBullets; b++)
                   priorSnapshot=snapshot;
                   afterSnapshot=snapshot-1;
                   if (afterSnapshot<0){ afterSnapshot=0; }
-                  ratio = (renderTime - bSnapshotTimestamp[b][priorSnapshot]) / 
+                  tRatio = (renderTime - bSnapshotTimestamp[b][priorSnapshot]) / 
                           (bSnapshotTimestamp[b][afterSnapshot] - bSnapshotTimestamp[b][priorSnapshot]);
                           break;
                   
               }
               snapshot++;
           }
-          if (priorSnapshot!=-1)
+          if (priorSnapshot>-1)
           { 
              var objPosX = bPosX[b][priorSnapshot] + 
                           tRatio * (bPosX[b][afterSnapshot] - bPosX[b][priorSnapshot]);
