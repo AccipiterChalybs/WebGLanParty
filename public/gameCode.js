@@ -134,7 +134,7 @@ var playerTexture=RIFLE_TEXTURE;
 //other player vars
 var otherPlayerObj=PLAYER_OBJ;
 var otherPlayerDisconnected=[];
-var NUM_SNAPSHOTS = 5;
+var NUM_SNAPSHOTS = 25;
 var snapshotTimestamp=[];
 var otherPosX=[];
 var otherPosY=[];
@@ -218,6 +218,13 @@ function start()
            bPosX[numBullets]=[];
            bPosY[numBullets]=[];
            bPosZ[numBullets]=[];
+           for (var s=0; s<NUM_SNAPSHOTS; s++)
+           {
+               bSnapshotTimestamp[numBullets][s] = new Date().getTime();
+               bPosX[numBullets][s] = data[2];
+               bPosY[numBullets][s] = data[3];
+               bPosZ[numBullets][s] = data[4];
+           }
            numBullets++;
         }
         var snapshot=NUM_SNAPSHOTS-1;
