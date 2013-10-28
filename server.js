@@ -181,8 +181,9 @@ function sendAllFullPos()
     {
         if (playerConnected[i])
         {
-            io.sockets.emit('fPos', [i, new Date().getTime(), playerPositionX[i][0], playerPositionY[i][0], 
-                               playerPositionZ[i][0], playerRotationY[i][0]]);
+            io.sockets.emit('fPos', [i, new Date().getTime(), roundData(playerPositionX[i][0]), 
+              roundData(playerPositionY[i][0]), roundData(playerPositionZ[i][0]), 
+              roundData(playerRotationY[i][0]) ]);
         }
     }
 }
@@ -193,8 +194,16 @@ function sendAllFullPos()
      {
         if (bulletLife[b]>0)
         {
-            io.sockets.emit('bPos', [b, new Date().getTime(), bulletPositionX[b], bulletPositionY[b], 
-                               bulletPositionZ[b] ]);
+            io.sockets.emit('bPos', [b, new Date().getTime(), roundData(bulletPositionX[b]), 
+                      roundData(bulletPositionY[b]), roundData(bulletPositionZ[b]) ]);
         }
      }
  }
+
+function roundData (value)
+{
+    value = value * 1000;
+    value = Math.round(value);
+    value = value / 1000;
+    return value;
+}
