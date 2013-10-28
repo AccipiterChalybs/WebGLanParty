@@ -25,6 +25,10 @@ var bulletRotationX=[];
 var bulletRotationY=[];
 var bulletLife=[];
 
+var LOOP_RATE=30;
+
+var DECIMAL_ROUND_VALUE = 100; // = 10 ^ (x) where x is number of decimal points to keep
+
 var lastTime=0;
 
 // Log the requests
@@ -108,7 +112,7 @@ io.sockets.on('connection', function (socket) {
 
 lastTime = new Date().getTime();
 
-setInterval(function(){mainLoop()}, 50);
+setInterval(function(){mainLoop()}, LOOP_RATE);
 
 // Fire it up!
 server.listen(8080);
@@ -202,8 +206,8 @@ function sendAllFullPos()
 
 function roundData (value)
 {
-    value = value * 1000;
+    value = value * DECIMAL_ROUND_VALUE;
     value = Math.round(value);
-    value = value / 1000;
+    value = value / DECIMAL_ROUND_VALUE;
     return value;
 }
