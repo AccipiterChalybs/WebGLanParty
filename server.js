@@ -25,7 +25,7 @@ var bulletRotationX=[];
 var bulletRotationY=[];
 var bulletLife=[];
 
-var LOOP_RATE=30;
+var LOOP_RATE=70;
 
 var DECIMAL_ROUND_VALUE = 100; // = 10 ^ (x) where x is number of decimal points to keep
 
