@@ -940,7 +940,7 @@ for (var b=0; b<numBullets; b++)
           mvTranslate([-camX, -camY, -camZ]);
 
           var snapshot=0;
-          var priorSnapshot=0;
+          var priorSnapshot=-1;
           var afterSnapshot=0;
           var tRatio=0;
           while (snapshot<NUM_SNAPSHOTS)
@@ -957,6 +957,7 @@ for (var b=0; b<numBullets; b++)
               }
               snapshot++;
           }
+          if (priorSnapshot==-1){ /*skip rendering */ continue}
 
          var objPosX = bPosX[b][priorSnapshot] + 
                       tRatio * (bPosX[b][afterSnapshot] - bPosX[b][priorSnapshot]);
