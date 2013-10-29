@@ -890,7 +890,7 @@ function drawScene() {
                   priorSnapshot=snapshot;
                   afterSnapshot=snapshot-1;
                   if (afterSnapshot<0){ afterSnapshot=0; }
-                  tRatio = (renderTime - snapshotTimestamp[p][priorSnapshot]) / 
+                  ratio = (renderTime - snapshotTimestamp[p][priorSnapshot]) / 
                           (snapshotTimestamp[p][afterSnapshot] - snapshotTimestamp[p][priorSnapshot]);
                           break;
                   
@@ -950,7 +950,7 @@ for (var b=0; b<numBullets; b++)
                   priorSnapshot=snapshot;
                   afterSnapshot=snapshot-1;
                   if (afterSnapshot<0){ afterSnapshot=0; }
-                  tRatio = (renderTime - bSnapshotTimestamp[b][priorSnapshot]) / 
+                  ratio = (renderTime - bSnapshotTimestamp[b][priorSnapshot]) / 
                           (bSnapshotTimestamp[b][afterSnapshot] - bSnapshotTimestamp[b][priorSnapshot]);
                           break;
                   
