@@ -85,7 +85,7 @@ var MOVES_UNTIL_RECALCULATE_PATH=5;
 
 paused=false;
 
-var RENDER_TIME_DELAY = 75; // render this many milliseconds back to reduce lag.
+var RENDER_TIME_DELAY = 300; // render this many milliseconds back to reduce lag.
 
 //score
 var score=0;
