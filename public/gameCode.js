@@ -889,8 +889,8 @@ function drawScene() {
               {
                   priorSnapshot=snapshot;
                   afterSnapshot=snapshot-1;
-                  if (afterSnapshot<0){ afterSnapshot=0; }
-                  ratio = (renderTime - snapshotTimestamp[p][priorSnapshot]) / 
+                  if (afterSnapshot<0){ afterSnapshot=0; ratio=0; break; }
+                  tRatio = (renderTime - snapshotTimestamp[p][priorSnapshot]) / 
                           (snapshotTimestamp[p][afterSnapshot] - snapshotTimestamp[p][priorSnapshot]);
                           break;
                   
@@ -949,8 +949,8 @@ for (var b=0; b<numBullets; b++)
               {
                   priorSnapshot=snapshot;
                   afterSnapshot=snapshot-1;
-                  if (afterSnapshot<0){ afterSnapshot=0; }
-                  ratio = (renderTime - bSnapshotTimestamp[b][priorSnapshot]) / 
+                  if (afterSnapshot<0){ afterSnapshot=0; ratio=0; break; }
+                  tRatio = (renderTime - bSnapshotTimestamp[b][priorSnapshot]) / 
                           (bSnapshotTimestamp[b][afterSnapshot] - bSnapshotTimestamp[b][priorSnapshot]);
                           break;
                   
@@ -965,8 +965,7 @@ for (var b=0; b<numBullets; b++)
                           tRatio * (bPosY[b][afterSnapshot] - bPosY[b][priorSnapshot]);
              var objPosZ = bPosZ[b][priorSnapshot] + 
                           tRatio * (bPosZ[b][afterSnapshot] - bPosZ[b][priorSnapshot]);
-             console.log ("ML: "+objPosX +"  " +objRotY+"  "+objPosZ+"  "+afterSnapshot+" "+priorSnapshot+ " " + renderTime);
-      //       var objRotY = otherRotY[p][priorSnapshot] + 
+       //       var objRotY = otherRotY[p][priorSnapshot] + 
        //                   tRatio * (otherRotY[p][afterSnapshot] - otherRotY[p][priorSnapshot]);
 
               mvTranslate([objPosX, objPosY, objPosZ]);
