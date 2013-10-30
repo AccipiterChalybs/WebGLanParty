@@ -1,4 +1,9 @@
 var SERVER_ADDRESS = 'http://ec2-54-215-232-7.us-west-1.compute.amazonaws.com/';
+//server vars - sync with server
+var BULLET_SPEED = 0.1;
+var START_BULLET_LIFE=3000;
+
+
 var socket;
 
 var chatMessage = "";
@@ -146,6 +151,8 @@ var numPlayers=0;
 //bullet vars
 var numBullets=0;
 var bSnapshotTimestamp=[];
+var bulletLife=[];
+var bulletAlive=[];
 var bPosX=[];
 var bPosY=[];
 var bPosZ=[];
@@ -240,6 +247,22 @@ function start()
         bPosX[incId][0] = data[2];
         bPosY[incId][0] = data[3];
         bPosZ[incId][0] = data[4];
+    });
+    socket.on('nbPos', function (data) {
+        var incId = data[0];
+        if (incId+1 > numBullets)
+        {
+           numBullets = incId+1
+        }
+        var startTime = data[1];
+        bPosX[incId] = data[2];
+        bPosY[incId] = data[3];
+        bPosZ[incId] = data[4];
+        bRotX[incId] = data[5];
+        bRotY[incId] = data[6];
+        bulletAlive = true;
+        bulletLife = START_BULLET_LIFE;
+        moveBullet(incId, new Data().getTime() - startTime);
     });
     socket.on('hit', function (data) {
         if (playerId == data) {respawn();}
@@ -918,7 +941,7 @@ function drawScene() {
 
 for (var b=0; b<numBullets; b++)
   {
-      if (true)//bulletAlive[b]
+      if (bulletAlive[b])
       {
           gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[bulletObj]);
           gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
@@ -939,7 +962,7 @@ for (var b=0; b<numBullets; b++)
           mvRotate(camRotY, [0,1,0])  
           mvTranslate([-camX, -camY, -camZ]);
 
-          var snapshot=0;
+       /*   var snapshot=0;
           var priorSnapshot=-2;
           var afterSnapshot=0;
           var tRatio=0;
@@ -969,11 +992,15 @@ for (var b=0; b<numBullets; b++)
        //                   tRatio * (otherRotY[p][afterSnapshot] - otherRotY[p][priorSnapshot]);
 
               mvTranslate([objPosX, objPosY, objPosZ]);
-            //  mvRotate(-objRotY, [0, 1, 0]);
-              setNormalMatrix();
-              setModelViewMatrix();
+            //  mvRotate(-objRotY, [0, 1, 0]);*/
 
-              gl.drawElements(gl.TRIANGLES, indices[bulletObj].length, gl.UNSIGNED_SHORT, 0);
+            mvTranslate([bPosX[b]], bPosY[b], bPosZ[b])
+            mvRotate(-bRotY[b], [0, 1, 0]);
+            mvRotate(-bRotX[b], [1, 0, 0]);
+            setNormalMatrix();
+            setModelViewMatrix();
+
+            gl.drawElements(gl.TRIANGLES, indices[bulletObj].length, gl.UNSIGNED_SHORT, 0);
         }
       }
   }
@@ -1066,6 +1093,29 @@ function act(dt)
     {
         socket.emit('nb', [playerId, new Date().getTime(), posX, posY, posZ, xRotation, yRotation]);
         reloadTime = 200;
+    }
+
+    for (var b=0; b<numBullets; b++)
+    {
+        moveBullet(b, dt);
+    }
+}
+
+function moveBullet (b, dt)
+{
+    if (bulletAlive[b])
+    {
+        bulletLife[b]-=dt;
+        if (bulletLife[b]<0) { bulletAlive[b]=false;}
+
+        //rotations are in degress, so convert them into radians
+        var horizontalMove = BULLET_SPEED * Math.cos(Math.PI*bRotX[b]/180);
+
+        bPosY[b] += -1*BULLET_SPEED * Math.sin(Math.PI*bRotX[b]/180) * dt;
+
+        bPosX[b] += horizontalMove * Math.sin(Math.PI*bRotY[b]/180) * dt;
+
+        bPosZ[b] += -horizontalMove * Math.cos(Math.PI*bRotY[b]/180) * dt;
     }
 }
 

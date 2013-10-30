@@ -95,6 +95,8 @@ io.sockets.on('connection', function (socket) {
 
           bulletLife[numBullets] = START_BULLET_LIFE;
 
+          sendNewBulletData(numBullets);
+
           numBullets++;
       });
     socket.on('disconnect', function () {
@@ -126,7 +128,7 @@ function mainLoop()
     lastTime = new Date().getTime();
     moveBullets(dt);
     sendAllFullPos();
-    sendAllBullets();
+ //   sendAllBullets();
 }
 
 function moveBullets(dt)
@@ -191,6 +193,14 @@ function sendAllFullPos()
         }
     }
 }
+
+ function sendNewBulletData()
+ {
+            io.sockets.emit('nbPos', [b, new Date().getTime(), roundData(bulletPositionX[b]), 
+                      roundData(bulletPositionY[b]), roundData(bulletPositionZ[b]), 
+                      roundData(bulletRotationX[b]), roundData(bulletRotationY[b]) ]);
+ }
+
 
  function sendAllBullets()
  {
