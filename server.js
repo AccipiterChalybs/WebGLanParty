@@ -194,7 +194,7 @@ function sendAllFullPos()
     }
 }
 
- function sendNewBulletData()
+ function sendNewBulletData(b)
  {
             io.sockets.emit('nbPos', [b, new Date().getTime(), roundData(bulletPositionX[b]), 
                       roundData(bulletPositionY[b]), roundData(bulletPositionZ[b]), 

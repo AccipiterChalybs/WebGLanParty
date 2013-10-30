@@ -156,6 +156,8 @@ var bulletAlive=[];
 var bPosX=[];
 var bPosY=[];
 var bPosZ=[];
+var bRotX=[];
+var bRotY=[];
 var reloadTime=0;
 var bulletObj = BOX_OBJ;
 var bulletTexture = RIFLE_TEXTURE;
@@ -260,9 +262,9 @@ function start()
         bPosZ[incId] = data[4];
         bRotX[incId] = data[5];
         bRotY[incId] = data[6];
-        bulletAlive = true;
-        bulletLife = START_BULLET_LIFE;
-        moveBullet(incId, new Data().getTime() - startTime);
+        bulletAlive[incId] = true;
+        bulletLife[incId] = START_BULLET_LIFE;
+        moveBullet(incId, new Date().getTime() - startTime);
     });
     socket.on('hit', function (data) {
         if (playerId == data) {respawn();}
@@ -994,14 +996,14 @@ for (var b=0; b<numBullets; b++)
               mvTranslate([objPosX, objPosY, objPosZ]);
             //  mvRotate(-objRotY, [0, 1, 0]);*/
 
-            mvTranslate([bPosX[b]], bPosY[b], bPosZ[b])
+            mvTranslate([bPosX[b]], bPosY[b], bPosZ[b]]);
             mvRotate(-bRotY[b], [0, 1, 0]);
             mvRotate(-bRotX[b], [1, 0, 0]);
             setNormalMatrix();
             setModelViewMatrix();
 
             gl.drawElements(gl.TRIANGLES, indices[bulletObj].length, gl.UNSIGNED_SHORT, 0);
-        }
+       // }
       }
   }
 
