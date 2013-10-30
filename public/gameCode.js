@@ -943,7 +943,7 @@ function drawScene() {
 
 for (var b=0; b<numBullets; b++)
   {
-      if (bulletAlive[b])
+      if (bulletAlive[b] || bulletLife[b]>0)
       {
           gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer[bulletObj]);
           gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
@@ -996,7 +996,7 @@ for (var b=0; b<numBullets; b++)
               mvTranslate([objPosX, objPosY, objPosZ]);
             //  mvRotate(-objRotY, [0, 1, 0]);*/
 
-            mvTranslate([bPosX[b]], bPosY[b], bPosZ[b]]);
+            mvTranslate([bPosX[b], bPosY[b], bPosZ[b]]);
             mvRotate(-bRotY[b], [0, 1, 0]);
             mvRotate(-bRotX[b], [1, 0, 0]);
             setNormalMatrix();
