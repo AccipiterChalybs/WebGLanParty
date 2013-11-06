@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+        <title>Web GL Fun!</title>
+
+        <script src="/sylvester.js"> </script>
+        <script src="/glUtils.js" type="text/javascript"> </script>
+        <script src="/gameCode.js" type="text/javascript"> </script>
+        <script src="/socket.io/socket.io.js"></script>
+
+         <script id="shader-vs" type="x-shader/x-vertex">
+          attribute vec3 vertexPosition;
+          attribute vec3 vertexNormal;
+          attribute vec2 vertexTexture;
+
+          uniform mat4 uMVMatrix;
+          uniform mat4 uPMatrix;
+          uniform mat3 normalMatrix;
+          
+          uniform mediump vec3 lightPosition;
+          uniform mediump vec3 lightPosition2;
+          uniform mediump vec3 lightPosition3;
+          
+          varying mediump vec3 normal;
+          varying mediump vec3 lightDistanceVector1;
+          varying mediump vec3 lightDistanceVector2;
+          varying mediump vec3 lightDistanceVector3;
+          varying mediump vec2 texCoord;
+          
+          void main(void) 
+          {
+            normal=normalMatrix*vertexNormal;
+            mediump vec4 position=uMVMatrix * vec4(vertexPosition, 1.0);
+            lightDistanceVector1 = lightPosition-position.xyz;
+            lightDistanceVector2 = lightPosition2-position.xyz;
+            lightDistanceVector3 = lightPosition3-position.xyz;
+            gl_Position = uPMatrix * position;
+            texCoord = vertexTexture;
+          }
+        </script>
+
+        <script id="shader-fs" type="x-shader/x-fragment">
+          uniform sampler2D sampler;
+          uniform mediump float lightDistance;
+          uniform mediump float lightDistance2;
+          uniform mediump vec3 lightMaterial;
+          uniform mediump vec3 lightMaterial2;
+          uniform mediump vec3 lightMaterial3;
+          uniform mediump vec2 texCoordAdd;
+          uniform mediump float lightingDisabled;
+
+          varying mediump vec3 normal;
+          varying mediump vec3 lightDistanceVector1;
+          varying mediump vec3 lightDistanceVector2;
+          varying mediump vec3 lightDistanceVector3;
+          varying mediump vec2 texCoord;
+          
+          void main(void) {
+                mediump vec3 nNormal = normalize(normal);
+                
+                mediump float distance = length(lightDistanceVector1);
+                mediump vec3 lightDirection = lightDistanceVector1/distance;
+                   
+                mediump float dLevel = max(0.0, dot(nNormal, lightDirection));
+                mediump float attenuation = 1.0;
+                mediump vec3 lightColor =  dLevel*attenuation*lightMaterial;
+                
+                distance = length(lightDistanceVector2);
+                lightDirection = lightDistanceVector2/distance;
+                   
+                dLevel = max(0.0, dot(nNormal, lightDirection));
+                attenuation = lightDistance2/(distance*distance);
+                lightColor =  lightColor+ dLevel*attenuation*lightMaterial2;
+                
+                distance = length(lightDistanceVector3);
+                lightDirection = lightDistanceVector3/distance;
+                   
+                dLevel = max(0.0, dot(nNormal, lightDirection));
+                attenuation = lightDistance2/(distance*distance);
+                lightColor =  lightColor+ dLevel*attenuation*lightMaterial3;
+               
+                gl_FragColor = vec4(lightColor*texture2D(sampler, texCoord).xyz,1);
+          }
+        </script>
+
+
+        <style>
+            html, body {
+              width:  100%;
+              height: 100%;
+              margin: 0px;
+              }
+            #glCanvas{
+            width: 100%;
+            }
+            body{
+            background-color: #000000 
+            }
+        </style>
+    </head>
+
+    <body onload="start()" id="WebPage">
+
+    <!-- Code to tell user how to fix WebGL not working -->
+    <div id="placeHolderA" style="display:none;">
+        <a href="/webGLFix.html">
+            <img src="/warning.png" alt="How to get the game working">
+        </a>
+    </div>
+
+     <!--  -->
+    <div id = "InputBox" style="border:2px solid rgb(0,175,255); overflow: hidden; white-space: nowrap; position: absolute; z-index: 1; left: 0x; top: 95%; width: 30%; height:5%; background-color: rgb(0,0,0); color: rgb(0,175,255); opacity: 0.5;">
+        </div>
+
+    <div id = "ChatBox" style="border:2px solid rgb(0,175,255); overflow-y: auto; position: absolute; z-index: 1; left: 0%; top: 80%; width: 30%; height: 15%; background-color: rgb(0,0,0); color: rgb(0,175,255); opacity: 0.5;">
+        </div>
+
+  <canvas id="glCanvas" width="300" height="180" onClick="lockPointer()" onMouseDown="mouseDown(event);" onMouseUp="mouseUp(event)">
+    Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
+  </canvas>
+  <audio id="music1" hidden=true>
+  <source src="http://www.thefourthestate.net/OwlieGL/test.wav" type="audio/wav">
+  <source src="http://www.thefourthestate.net/OwlieGL/test.wav" type="audio/wav">
+</audio>
+<audio id="music2" hidden=true>
+  <source src="http://www.thefourthestate.net/OwlieGL/test.wav" type='audio/wav' >
+</audio>
+    </body>
+</html>
